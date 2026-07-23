@@ -41,6 +41,8 @@ Module 5 and Level 3. Any recent version of each app works; menu names are
 stable across recent releases, though panel layouts can shift slightly
 between versions.
 
+🎥 **Prefer video?** Watch the [Mastery Path video series](https://youtube.com/@sigilipelli) on YouTube — Shorts and full walkthroughs of these lessons.
+
 ## More from the Mastery Path series
 
 Free, structured, module-wise training across 31 other languages and platforms:
