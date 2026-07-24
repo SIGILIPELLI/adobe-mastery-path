@@ -1,3 +1,8 @@
+---
+title: "Learn Adobe Creative Cloud Free: Photoshop, Illustrator, Premiere"
+description: "Free Adobe Creative Cloud course covering Photoshop, Illustrator, and Premiere Pro, beginner to advanced. Part of a 37-course free learning library."
+---
+
 # Adobe Creative Cloud Mastery Path
 
 A structured, module-wise Adobe Creative Cloud training program that takes you
