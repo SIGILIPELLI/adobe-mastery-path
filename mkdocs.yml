@@ -62,8 +62,19 @@ nav:
       - "08 · Premiere Editing Workflow": level-1/08-premiere-editing-workflow.md
       - "09 · Cross-App Creative Cloud Libraries Workflow": level-1/09-cross-app-libraries-workflow.md
       - "10 · Capstone Project — Brand Kit": level-1/10-capstone-brand-kit.md
+  - "Level 2 · Intermediate":
+      - Overview: level-2/index.md
+      - "01 · Advanced Layers & Smart Objects (Photoshop)": level-2/01-advanced-layers-smart-objects.md
+      - "02 · Photoshop Color Correction & Grading": level-2/02-photoshop-color-correction.md
+      - "03 · Illustrator Advanced Typography": level-2/03-illustrator-advanced-typography.md
+      - "04 · Illustrator Gradients, Meshes & Effects": level-2/04-illustrator-gradients-meshes.md
+      - "05 · Premiere Multi-Cam Editing": level-2/05-premiere-multicam-editing.md
+      - "06 · Premiere Audio Mixing & Sound Design": level-2/06-premiere-audio-mixing.md
+      - "07 · Photoshop Automation (Actions & Batch Processing)": level-2/07-photoshop-automation-actions.md
+      - "08 · Illustrator Pattern & Asset Libraries": level-2/08-illustrator-pattern-libraries.md
+      - "09 · Premiere Titles & Essential Graphics": level-2/09-premiere-titles-essential-graphics.md
+      - "10 · Project — Multi-App Marketing Campaign": level-2/10-project-marketing-campaign.md
 # --- auto-pruned stub levels (see AdSense low-value-content fix) ---
 exclude_docs: |
-  level-2/*.md
   level-3/*.md
   level-4/*.md

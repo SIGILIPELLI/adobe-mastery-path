@@ -19,7 +19,7 @@ Lightroom, and InDesign, as real production workflows.
 | Level | Focus | Modules |
 |-------|-------|---------|
 | [Level 1 · Entry](level-1/index.md) | Creative Cloud setup, Photoshop/Illustrator/Premiere/After Effects basics, cross-app Libraries | 9 topics + 1 project |
-| Level 2 · Intermediate (coming soon) | Deeper Photoshop, Illustrator, and Premiere workflows | 9 topics + 1 project |
+| [Level 2 · Intermediate](level-2/index.md) | Deeper Photoshop, Illustrator, and Premiere workflows | 9 topics + 1 project |
 | Level 3 · Advanced (coming soon) | After Effects motion graphics, Lightroom, InDesign | 9 topics + 1 project |
 | Level 4 · Master (coming soon) | Multi-app production pipelines, color management, client delivery | 9 topics + 1 capstone |
 
