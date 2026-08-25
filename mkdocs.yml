@@ -74,7 +74,27 @@ nav:
       - "08 · Illustrator Pattern & Asset Libraries": level-2/08-illustrator-pattern-libraries.md
       - "09 · Premiere Titles & Essential Graphics": level-2/09-premiere-titles-essential-graphics.md
       - "10 · Project — Multi-App Marketing Campaign": level-2/10-project-marketing-campaign.md
-# --- auto-pruned stub levels (see AdSense low-value-content fix) ---
-exclude_docs: |
-  level-3/*.md
-  level-4/*.md
+  - "Level 3 · Advanced":
+      - Overview: level-3/index.md
+      - "01 · After Effects Motion Graphics Fundamentals": level-3/01-ae-motion-graphics-fundamentals.md
+      - "02 · After Effects Keyframing & Easing": level-3/02-ae-keyframing-easing.md
+      - "03 · After Effects Compositing & Effects": level-3/03-ae-compositing-effects.md
+      - "04 · After Effects Expressions Basics": level-3/04-ae-expressions-basics.md
+      - "05 · Lightroom Classic Import & Organization": level-3/05-lightroom-import-organization.md
+      - "06 · Lightroom Classic Develop Module & Color Grading": level-3/06-lightroom-develop-color-grading.md
+      - "07 · InDesign Layout & Grids Basics": level-3/07-indesign-layout-grids.md
+      - "08 · InDesign Styles & Long Documents": level-3/08-indesign-styles-long-documents.md
+      - "09 · After Effects Motion Tracking Basics": level-3/09-ae-motion-tracking-basics.md
+      - "10 · Project — Animated Explainer Video": level-3/10-project-explainer-video.md
+  - "Level 4 · Master":
+      - Overview: level-4/index.md
+      - "01 · Multi-App Production Pipelines Overview": level-4/01-multi-app-pipelines-overview.md
+      - "02 · Dynamic Link: Premiere ↔ After Effects": level-4/02-dynamic-link-premiere-ae.md
+      - "03 · Advanced Color Management Across Apps": level-4/03-advanced-color-management.md
+      - "04 · Team Libraries & Collaboration at Scale": level-4/04-team-libraries-collaboration.md
+      - "05 · Automating Workflows with Actions & Scripts": level-4/05-automating-workflows-scripts.md
+      - "06 · After Effects Motion Graphics Templates (Mogrts)": level-4/06-ae-motion-graphics-templates.md
+      - "07 · Premiere Advanced Color Grading (Lumetri Scopes)": level-4/07-premiere-advanced-color-grading.md
+      - "08 · InDesign-to-Print Production Workflow": level-4/08-indesign-print-production.md
+      - "09 · Portfolio & Client Delivery Workflows": level-4/09-portfolio-client-delivery.md
+      - "10 · Capstone Project — Full Campaign Production": level-4/10-capstone-campaign-production.md
