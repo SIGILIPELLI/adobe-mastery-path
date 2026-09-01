@@ -1,8 +1,8 @@
 site_name: Adobe Creative Cloud Mastery Path
 site_description: A structured, module-wise Adobe Creative Cloud training program from entry level to master level, covering Photoshop, Illustrator, Premiere Pro, and After Effects workflows.
-site_url: https://sigilipelli.github.io/adobe-skillmastery/
-repo_url: https://github.com/SIGILIPELLI/adobe-skillmastery
-repo_name: adobe-skillmastery
+site_url: https://sigilipelli.github.io/adobe-mastery-path/
+repo_url: https://github.com/SIGILIPELLI/adobe-mastery-path
+repo_name: adobe-mastery-path
 
 theme:
   name: material
