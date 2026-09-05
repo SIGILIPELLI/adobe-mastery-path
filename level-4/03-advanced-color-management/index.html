@@ -1979,6 +1979,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2466,6 +2488,64 @@ color spaces, profiles, and where to manage them in each app.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A color profile is a mathematical mapping between a device-independent
+  reference space and a specific set of numeric RGB/CMYK values, not a
+  cosmetic tag.</strong> An ICC profile defines exactly what real-world color
+  (in a standardized space like CIE Lab) each possible numeric value in
+  that profile's space corresponds to. This is why "Use the embedded
+  profile" versus letting an app reinterpret a file in its own working
+  space produces genuinely different colors: the identical numeric pixel
+  values (say, RGB 200,50,50) mean a measurably different real-world color
+  under an Adobe RGB profile than under an sRGB profile, because each
+  profile defines its own mapping from numbers to actual color.</li>
+<li><strong>Converting between color spaces (RGB to CMYK, sRGB to Adobe RGB) is a
+  real numeric transform through that device-independent reference space,
+  and it is lossy whenever the destination gamut is smaller.</strong> Convert to
+  Profile looks up each pixel's color in the reference space via the source
+  profile, then finds the nearest reproducible value in the destination
+  profile's gamut using a chosen rendering intent (Perceptual compresses
+  the whole gamut relatively to preserve smooth gradations, Relative
+  Colorimetric clips out-of-gamut colors to the nearest in-gamut edge
+  while leaving in-gamut colors unchanged) — which is exactly the
+  mechanism behind Gamut Warning: it's flagging pixels whose reference-space
+  color falls outside the boundary the destination profile can represent
+  at all.</li>
+<li><strong>A camera Log/flat profile stores sensor data non-linearly specifically
+  to preserve more dynamic range in a standard bit depth, and an Input LUT
+  is a lookup table reversing that specific non-linear encoding back toward
+  a standard viewing space.</strong> Log encoding intentionally under-represents
+  shadows and compresses highlights relative to how a display expects to
+  show them, trading immediate "correct-looking" footage for extra
+  recoverable range during grading; the LUT is a literal per-value or
+  per-cube remapping table (the same interpolated-lookup concept as an
+  adjustment layer's tone curve) built to invert that specific encoding
+  curve, which is why using the wrong camera's LUT on another camera's log
+  footage produces visibly incorrect color — the lookup table doesn't match
+  the actual encoding that was applied at capture.</li>
+<li><strong>Rec. 709 and sRGB share nearly the same color primaries and gamut but
+  differ in their transfer function (gamma curve), which is the specific,
+  measurable reason "video" and "web/print" color pipelines aren't
+  simply interchangeable despite looking similar.</strong> Both define red/green/
+  blue primaries and a white point close enough to be nearly identical in
+  gamut extent, but the numeric-value-to-brightness relationship (the
+  transfer function/gamma) each specifies differs slightly — an image
+  correctly decoded under one transfer function and displayed as if it used
+  the other renders with a measurable brightness/contrast shift, which is
+  the mechanical reason keeping Premiere's sequence and a Dynamic-Linked AE
+  comp's project color settings aligned specifically matters, beyond just
+  "using similar-sounding color spaces."</li>
+<li><strong>Lightroom's fixed ProPhoto RGB working space is deliberately wider than
+  any output target, which is why export-time conversion (not the internal
+  working space) is the actual control point for color management.</strong>
+  ProPhoto RGB's gamut is wide enough to contain essentially the full range
+  of colors a camera sensor can capture, so every internal Develop
+  calculation happens with maximum headroom; the meaningful compression
+  down to sRGB, Adobe RGB, or a CMYK proof profile only happens once, at
+  the export step, which is precisely the mechanism the exercise below is
+  demonstrating by producing two different exports from one graded source.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Take one graded photo and produce two exports: an sRGB version for web/
 video use and a CMYK version converted to a specific print profile for a

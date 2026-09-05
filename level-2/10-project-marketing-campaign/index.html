@@ -1423,6 +1423,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2322,6 +2333,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2505,6 +2527,50 @@ deliverable that looks off.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Every "consistency check" in Step 5 is really verifying that a shared
+  reference resolved identically in each app, not that a human eyeballed a
+  close match.</strong> The photo grade, the headline treatment, and the
+  background pattern each trace back to one authoritative source: a
+  recorded Action's parameters, a Library Graphic's version, or a <code>.mogrt</code>'s
+  exposed properties. When something drifts visually, the actual cause is
+  always one specific link in that chain being broken — a photo processed
+  by hand instead of through the Batch-run Action, a headline retyped in
+  Photoshop instead of pulled from the Library Graphic, a title rebuilt from
+  scratch in Premiere instead of dropped in from the exported <code>.mogrt</code> —
+  which is exactly why "fix the source, not the symptom" is the right
+  instinct: the visual mismatch is a downstream symptom of a specific
+  reference having been bypassed somewhere upstream.</li>
+<li><strong>The photo set and the poster/video grades can drift for a structural
+  reason even when every asset is correctly linked: RGB (Photoshop/
+  Illustrator) and Rec. 709 (Premiere/Lumetri) are different working color
+  spaces evaluating the same numeric grade differently</strong>, as covered in this
+  level's color-correction module — matching the <em>mood</em> across deliverables
+  built in different apps means matching the intent of a grade (its
+  direction and relative strength), not assuming identical slider values
+  will render identically once decoded through a different app's color
+  pipeline.</li>
+<li><strong>The whole campaign's reuse strategy rests on the same three reference
+  mechanisms stacked together</strong>: Creative Cloud Library assets (cross-app,
+  cross-document references resolved by asset ID and version), a <code>.mogrt</code>'s
+  exposed-parameter whitelist (a locked structure with a small set of
+  editable hooks), and a Photoshop Action's recorded, replayable command
+  sequence (deterministic operations re-applied to new source data). Each
+  solves a different kind of "keep many outputs synchronized with one
+  source" problem — asset identity, template safety, and repeatable batch
+  transformation, respectively — which is why a real production pipeline
+  layers all three rather than relying on any single one to do everything.</li>
+<li><strong>A batch-processed photo set inherits any grading error uniformly and
+  silently across every file, because the Action has no awareness of
+  per-photo differences.</strong> If the recorded Camera Raw parameters were tuned
+  against one photo's specific exposure and white balance, running that
+  same Action against photos shot under different lighting applies the
+  identical absolute correction to all of them — correctly for the sample
+  photo, and by exactly the same amount (right or wrong) for every other
+  one, since the Action has no per-file adaptive logic, only a replayed
+  fixed sequence of commands.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Complete all four deliverables — photo set, background, poster, and promo
 video — as one connected campaign rather than four unrelated files. Confirm

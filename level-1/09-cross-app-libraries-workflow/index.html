@@ -1008,6 +1008,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2443,6 +2465,49 @@ been used can be refreshed to match, all from one source of truth.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A linked Smart Object is a reference wrapper, not a placed copy of
+  pixels or paths.</strong> When you drag a Library Graphic into Photoshop, what
+  actually gets written into the <code>.psd</code> is a Smart Object layer whose
+  content payload is "asset ID + version" rather than embedded artwork data.
+  On open, Photoshop resolves that reference by fetching (or reading from
+  local cache) the actual Illustrator data for that asset ID and rendering
+  it into the Smart Object's bounding box — which is exactly why
+  double-clicking it round-trips you into Illustrator editing the <em>original</em>
+  document, not a disconnected copy: there only ever was one document, just
+  referenced from two apps.</li>
+<li><strong>"Update" isn't a live push — it's each placed instance re-checking a
+  version pointer.</strong> Editing a Library asset writes a new version to
+  Adobe's cloud store and bumps the asset's current-version marker; every
+  app showing that Library reflects the <em>swatch/style list</em> updating almost
+  immediately because that's cheap metadata. But a Graphic already placed
+  on a canvas keeps referencing whatever version ID it was placed with,
+  by design (so your file doesn't silently change every time you open it
+  after someone else edits a shared asset) — the explicit Update/Relink
+  action is the moment that placed instance's version pointer is advanced
+  to match the Library's current one and the content is re-fetched.</li>
+<li><strong>Color swatches and Character Styles differ from Graphics in exactly one
+  structural way: they carry no separate rendered geometry, just parameter
+  values.</strong> A color swatch is stored as a small numeric record (color space</li>
+<li>component values); a Character Style is a named bundle of text
+  attributes referencing a color swatch by asset ID rather than a literal
+  value. That's why they can update <em>instances</em> in place far more visibly
+  and immediately than a Graphic can — applying a Character Style to text
+  doesn't embed a copy of the values, it applies a live reference to the
+  style asset, so a later edit to that style's stored parameters is picked
+  up the next time the app re-evaluates styled text, with none of the
+  "placed geometry" resolution step a Graphic requires.</li>
+<li><strong>Cross-app availability depends on which apps' engines know how to
+  interpret which asset type</strong>, which is the real reason Premiere's support
+  for Library assets is narrower than Photoshop/Illustrator's — Premiere's
+  Essential Graphics engine can resolve color and (with support) certain
+  graphic types because it shares Adobe's Motion Graphics template
+  rendering pipeline, but it has no native raster/vector layer-editing
+  engine the way Photoshop and Illustrator do, so some asset types that
+  round-trip cleanly between those two simply have no equivalent renderer
+  to resolve into inside Premiere.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Using the <code>Mastery Path Brand Kit</code> Library from Module 1: add two more
 named color swatches (a primary and an accent), one saved character style,

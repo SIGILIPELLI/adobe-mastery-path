@@ -1205,6 +1205,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2261,6 +2272,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2459,6 +2481,59 @@ copy of the live text.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>OpenType features are lookup tables baked into the font binary, applied
+  by substitution rules — not separate glyph shapes Illustrator draws
+  itself.</strong> An OpenType font stores its glyphs plus a set of GSUB
+  (glyph substitution) rules keyed to feature tags like <code>liga</code> (standard
+  ligatures), <code>swsh</code> (swashes), or numbered <code>ss01</code>-<code>ss20</code> (stylistic sets).
+  Turning on a feature tells Illustrator's text engine to apply that rule
+  table during layout: wherever the input glyph sequence matches a rule's
+  trigger pattern (e.g. "f" followed by "i"), it substitutes the single
+  pre-drawn ligature glyph the font author designed for that pair. A font
+  with no such tables simply has nothing for the feature checkbox to
+  trigger, which is the real reason it grays out rather than doing nothing
+  visually.</li>
+<li><strong>A Paragraph Style cascading from a "Based On" parent works through
+  property inheritance, not a copy made at creation time.</strong> A child style
+  stores only the properties that differ from its parent, plus a reference
+  to the parent style; when Illustrator renders text using the child style,
+  it resolves any unset property by walking up to the parent. That's
+  mechanically why editing the base style's shared properties later
+  propagates to every style built on it — you're editing the one place
+  those inherited values actually live, not many independent copies.</li>
+<li><strong>The "+" override indicator exists because styles and direct formatting
+  are stored in separate layers of the same text object.</strong> Applying a style
+  writes a reference to that style's property set; manually changing a
+  property afterward (bolding one word inside a styled paragraph, say)
+  writes a <em>local override</em> on top, without altering the style reference
+  itself. Clear Override deletes only that local-override layer, which is
+  why the text snaps back to exactly what the named style defines rather
+  than to some undo history state.</li>
+<li><strong>Create Outlines converts each glyph's own internal contour data into
+  ordinary Illustrator paths — it isn't approximating the letterform, it's
+  extracting the literal outline the font already stores.</strong> Every glyph in
+  a font (TrueType or OpenType) is itself defined as one or more closed
+  Bézier or quadratic contours (the same math from Module 3's "How It
+  Actually Works" on paths) plus advance-width metadata for spacing. Create
+  Outlines copies those exact contours into your document as compound
+  paths and discards the font reference and its layout metadata (kerning
+  tables, ligature rules, style hierarchy) — which is precisely why the
+  result is pixel-for-pixel identical in shape to the live text, and
+  precisely why it can never be reversed back into an editable font
+  reference: that reference was deleted, not hidden.</li>
+<li><strong>Envelope Distort and live Warp effects reshape the <em>rendered</em> output
+  through a mesh or arc transform applied at display time, leaving the
+  original object's data untouched underneath.</strong> An Envelope wraps the
+  object in a deformation mesh whose control points bend the coordinate
+  space the object is drawn into; Illustrator recalculates the object's
+  appearance against that warped mesh on every redraw, without altering the
+  object's own stored geometry (or, for live text, its font reference) at
+  all. That's the structural reason double-clicking through an envelope
+  still finds fully live, re-editable text, and why Release simply discards
+  the mesh with nothing left to reconcile.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Set a short headline and turn on at least one OpenType feature the font
 supports (a ligature or stylistic set) via the OpenType panel. Build a

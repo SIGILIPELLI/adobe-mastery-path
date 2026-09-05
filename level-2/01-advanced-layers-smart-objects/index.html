@@ -1160,6 +1160,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2518,6 +2540,57 @@ it.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A Smart Object defers rasterization to render time instead of baking it
+  in at edit time.</strong> Internally it stores the original embedded (or linked)
+  data plus a stack of transform/filter instructions — a scale factor, a
+  rotation matrix, a list of Smart Filter parameters — rather than a single
+  resampled pixel grid. Every time Photoshop needs to display or export the
+  layer, it re-renders from the <em>original</em> source data through that
+  instruction stack in one pass. That's the actual mechanism behind
+  non-destructive scaling: repeatedly changing the scale value just edits a
+  number in the instruction stack, so Photoshop always resamples once, from
+  full-resolution source, at whatever the final scale ends up being — never
+  from an already-resampled intermediate result the way a plain raster
+  layer would.</li>
+<li><strong>A Smart Filter is a per-filter entry in that same instruction stack,
+  each with its own mask channel.</strong> Because the filter's parameters are
+  stored rather than applied to pixels, reopening a Smart Filter re-invokes
+  the filter algorithm with the saved settings against the <em>current</em>
+  resolved content of the Smart Object — which is why editing the source
+  file and re-saving it correctly re-runs every downstream Smart Filter
+  automatically, rather than leaving stale filtered pixels behind.</li>
+<li><strong>A layer group's "Pass Through" blend mode is a flag that skips an
+  intermediate compositing step, not a default with no effect.</strong> With Pass
+  Through, Photoshop composites each layer inside the group directly against
+  whatever is beneath the <em>group</em> in the main stack, exactly as if no group
+  boundary existed. Any other blend mode forces Photoshop to first
+  fully composite the group's contents into an isolated buffer, then blend
+  <em>that flattened buffer</em> against the layers below using the chosen mode —
+  this two-stage versus one-stage compositing is the literal reason a
+  group's blend mode is the one property that can change how identical
+  contents render.</li>
+<li><strong>Blend modes are per-channel arithmetic functions evaluated on
+  normalized (0-1) pixel values, not visual presets.</strong> Multiply computes
+  <code>base × blend</code> for each of R, G, and B independently — since any value
+  multiplied by 1 (white) stays unchanged and anything multiplied by a
+  fraction darkens, white in the blend layer becomes invisible and darker
+  values progressively darken the base. Screen is the inverted-space
+  version: <code>1 - (1-base)×(1-blend)</code>, which is mathematically why it behaves
+  as Multiply's mirror image and treats black as the "invisible" value.
+  Overlay is a conditional blend that branches per-pixel on whether the base
+  value is above or below 0.5, applying Multiply-like or Screen-like
+  behavior accordingly — which is exactly why it adds contrast rather than
+  uniformly darkening or lightening.</li>
+<li><strong>The Screen-mode light-leak trick works because near-black source pixels
+  evaluate to almost zero contribution in that formula</strong> — not because
+  Photoshop is doing any special-case "remove black background" operation.
+  Any texture authored with a true black background will disappear under
+  Screen for the same underlying arithmetic reason, which is also why a
+  texture with a dark-gray-not-black background leaves a faint visible haze
+  instead of fully vanishing.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Build a two-layer composite: a base photo and a texture or graphic overlay.
 Convert the overlay to a Smart Object, scale it up and back down twice using

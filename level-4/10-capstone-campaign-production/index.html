@@ -2195,6 +2195,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#stretch-goals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2340,6 +2351,17 @@
     <span class="md-ellipsis">
       
         Cheat sheet — capstone touchpoints
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
       
     </span>
   </a>
@@ -2532,6 +2554,50 @@ side one more time and confirm:</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Every check in Step 7 is verifying a different link/reference mechanism
+  from across this whole level resolved correctly, not just that things
+  happen to look similar.</strong> "Pixel-identical brand assets" tests the Team
+  Library's per-asset ID/version sync (Module 4); "the same intended color"
+  tests whether both the Rec. 709/sRGB video pipeline and the CMYK print
+  conversion started from one color-managed source and diverged only by
+  the expected, physically-grounded gamut difference (Module 3); "no
+  orphaned link warnings" tests that Dynamic Link, <code>.mogrt</code> exposure, and
+  InDesign's Links panel all successfully resolved their references into
+  final flattened data at export (Modules 2, 6, 8, 9). None of these are
+  independent "spot the difference" checks — they're all instances of the
+  same reference-resolution pattern this whole course keeps returning to,
+  applied at the scale of a full production.</li>
+<li><strong>The video and print color match is bounded by physics, not tooling,
+  which is why "accounting for the expected shift" is in the review
+  checklist rather than "confirming an exact match."</strong> As established in
+  Module 3, CMYK's gamut is a real subset of what RGB/Rec. 709 can display
+  — no amount of correct color management makes a saturated screen blue
+  reproduce identically in ink. The review step is checking that the
+  <em>intended</em> color direction and mood survive the conversion (a
+  correctly-managed pipeline), not chasing an impossible pixel-for-pixel
+  match across two different physical color-reproduction systems.</li>
+<li><strong>A Dynamic Link element and a <code>.mogrt</code> title represent the two opposite
+  points on the same live-versus-packaged spectrum this level has been
+  building toward, and using both in one hero video is a deliberate
+  demonstration of choosing the right one per use case.</strong> Dynamic Link
+  keeps a live connection to a specific <code>.aep</code> file for content still under
+  active revision within <em>this</em> project; the <code>.mogrt</code> packages a finished,
+  reusable design into a portable, self-contained file safe to hand to
+  other editors or reuse across other projects without depending on the
+  source project's continued existence — the campaign uses each exactly
+  where its trade-offs fit.</li>
+<li><strong>The archive-versus-delivery-folder split exists because flattening is
+  irreversible (Module 9): the delivery folder holds only the end state of
+  every reference resolved to final output, while the archive is the last
+  point at which every link (Team Library assets, Dynamic Link comps,
+  InDesign image links) is still live and re-editable.</strong> Only the archived,
+  pre-flattened project can actually support a future revision request —
+  which is the concrete, practical reason this capstone treats "delivered"
+  and "archived" as two genuinely different snapshots rather than one
+  folder serving both purposes.</li>
+</ul>
 <h2 id="stretch-goals">Stretch goals<a class="headerlink" href="#stretch-goals" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Extend the pipeline to a second language version of the print piece

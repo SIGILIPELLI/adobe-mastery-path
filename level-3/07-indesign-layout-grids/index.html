@@ -1715,6 +1715,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2485,6 +2507,55 @@ consistent.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>A master page is a template object every applied document page
+  references, not content copied onto each page at creation time.</strong> Objects
+  drawn on a master are stored once, as part of that master spread; each
+  document page carries a reference to which master it's based on, and
+  InDesign composites the master's objects underneath that page's own
+  content at render/display time. That's exactly why editing the master
+  later updates every page that references it — there's only one copy of
+  the header/footer/page-number frame, being drawn onto many pages, not
+  many independent copies.</li>
+<li><strong>A local override severs one specific object's link to the master for
+  that one page only, by copying its properties into a page-level object
+  while a pointer back to the master original remains for tracking.</strong>
+  Ctrl/Cmd+Shift+click writes an editable local copy that page's rendering
+  now uses instead of directly reading the master's object — which is
+  mechanically the same override-versus-inherited-style split covered for
+  Illustrator Paragraph Styles and Premiere Master Text Styles: a named,
+  shared definition versus a local exception layered on top of it.</li>
+<li><strong>An automatic page number is a special marker character resolved at
+  render/export time to the current page's actual number, not a hardcoded
+  digit.</strong> The <code>Current Page Number</code> marker InDesign inserts is a
+  placeholder token in the text stream; whenever InDesign displays or
+  exports a page, it substitutes that token with the number of whichever
+  page the containing frame currently sits on — which is precisely why the
+  same master's footer frame shows "12" on page 12 and "47" on page 47
+  despite being one single object being referenced by both pages.</li>
+<li><strong>The baseline grid and text leading are the same underlying vertical
+  measurement, which is why matching them is what makes lines align across
+  columns.</strong> Leading is the vertical distance InDesign advances between
+  successive lines of text in a paragraph style; the baseline grid is a
+  fixed set of horizontal rule positions at a chosen increment. When a
+  paragraph's leading exactly divides into the grid's increment (or is set
+  to align to the grid via the paragraph's own grid-snap option), each
+  line's baseline lands exactly on a grid rule — text in a narrower column
+  and text in a wider column both hit the same horizontal Y-positions
+  because both are being placed against the identical fixed grid, not
+  independently spaced.</li>
+<li><strong>Threaded text frames form a single continuous text story split across
+  multiple frame containers — one flow of characters, not several
+  independent text blocks.</strong> Internally, InDesign stores the paragraph/
+  character data as one story object; each linked frame is simply a
+  viewport showing a contiguous range of that story's content, computed by
+  InDesign's line-composition engine determining how much text fits before
+  overflowing to the next linked frame. That's the mechanism behind editing
+  text in an earlier frame reflowing everything in every frame linked after
+  it — they're all views into the same underlying character stream, not
+  separately-edited copies.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Build a multi-page document (at least 4 pages) with a master page carrying
 an automatic page number and a repeating footer element. Set up a column

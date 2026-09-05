@@ -941,6 +941,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2261,6 +2272,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2439,6 +2461,57 @@ depending on where it's going.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Pathfinder operations are boolean set algebra performed on path
+  geometry.</strong> Illustrator treats each closed path as defining a set of
+  enclosed points on the plane; Unite computes the mathematical union of
+  those point sets and re-traces a single outline around the combined
+  region, Intersect keeps only points common to all sets, Minus Front
+  subtracts one set from another, and Exclude is a symmetric difference
+  (union minus intersection). The result is always freshly recomputed path
+  geometry — new anchor points where boundaries crossed — not the original
+  shapes hidden behind a mask, which is why the source shapes stop existing
+  as separate editable objects unless you use the non-destructive <strong>Shape
+  Builder</strong> or the Pathfinder panel's Expand-later options instead.</li>
+<li><strong>Text-on-a-path repurposes the path as a positioning spine, not a
+  container.</strong> Illustrator measures the path's arc length and lays out each
+  glyph's baseline as an offset along that arc, rotating each character to
+  stay tangent to the curve at its position — this is why very tight curves
+  cause glyphs to visually overlap or fan apart (the tangent angle changes
+  faster than the glyph width can compensate for) and why flipping the text
+  effectively reverses which direction the arc-length offset is measured
+  from.</li>
+<li><strong>RGB and CMYK aren't just different presets, they're different, non-
+  interchangeable color models with different gamuts.</strong> RGB is additive —
+  a display starts black and adds red/green/blue light to reach a color,
+  covering a wide gamut including highly saturated colors screens can emit
+  directly. CMYK is subtractive — ink absorbs (subtracts) wavelengths from
+  reflected white light, and the achievable gamut is physically smaller,
+  especially in saturated blues, greens, and oranges. Converting a
+  saturated RGB color to CMYK necessarily clips it to the nearest color the
+  ink combination can reproduce, which is the actual mechanism behind
+  colors "looking duller" after switching Document Color Mode — it isn't
+  a display bug, it's a real reduction in reproducible color.</li>
+<li><strong>SVG export serializes the same path math as literal markup, while PNG
+  export rasterizes it once at a fixed size.</strong> An exported SVG's <code>&lt;path d="..."&gt;</code>
+  attribute contains the same anchor-point and Bézier-handle coordinates
+  Illustrator uses internally, encoded as SVG's path command syntax — the
+  browser's own rendering engine re-runs the same curve math at whatever
+  size the SVG is displayed, which is the actual reason it stays crisp at
+  any zoom. PNG export instead asks Illustrator to rasterize that vector
+  math once, at the PPI/pixel-dimensions you specify, permanently locking
+  in a fixed pixel grid — after that, it behaves exactly like any other
+  raster image, sharp only at or below its exported resolution.</li>
+<li><strong>Bleed works because presses cannot cut with zero tolerance.</strong> A
+  bleed value tells Illustrator to extend background artwork past the
+  trim boundary; the physical guillotine or cutting die is only accurate to
+  within a small tolerance, so if art stopped exactly at the trim line, any
+  cut that lands a fraction of a millimeter short would reveal a sliver of
+  uncut white paper. Extending artwork into the bleed margin means that
+  tolerance window is safely covered by more of the same artwork instead of
+  blank stock, regardless of which direction the real cut drifts.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Using the artboard you left blank in Module 3's exercise, build a simple
 icon or badge shape using at least two Pathfinder operations (e.g. Unite

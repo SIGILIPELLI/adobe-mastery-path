@@ -784,6 +784,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2467,6 +2489,55 @@ web) at no extra cost.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<p>A Library isn't a folder of files that gets copied around — it's a client
+for a per-asset sync protocol against Adobe's Creative Cloud servers, and
+understanding that model explains almost every quirk you'll hit later.</p>
+<ul>
+<li><strong>Each asset is its own sync unit, not the whole Library.</strong> When you drag
+  a Graphic into the Libraries panel, Adobe stores the underlying editable
+  data (for a Photoshop-origin Graphic, effectively a mini-PSD with its
+  layers, not a flattened bitmap) plus a rendered preview thumbnail as
+  <em>separate</em> cloud objects, each with its own asset ID and version number.
+  That's why updating one swatch doesn't re-upload your whole Library, and
+  why a huge Library with one giant Graphic syncs that one asset slowly
+  while everything else stays instantly available.</li>
+<li><strong>What a placed instance actually stores is a reference, not a copy.</strong>
+  When you place a Library Graphic into a Photoshop document, Photoshop
+  embeds a <strong>linked Smart Object</strong> whose contents point at that asset's ID
+  and current version, not a baked-in copy of the pixels at place-time.
+  That reference is what makes "Update" possible later (Module 9) — the
+  Smart Object re-fetches whatever version the asset ID currently resolves
+  to. If you instead flatten or rasterize a placed Graphic, you sever that
+  reference permanently; there's no metadata left connecting it back to the
+  Library asset.</li>
+<li><strong>Sync is asynchronous and conflict-resolved by version, not by merge.</strong>
+  Each app maintains a local cache of every Library you've synced (so
+  Libraries still open offline), and reconciles with the cloud on a
+  change-detection loop rather than continuously streaming every keystroke.
+  If the same asset is edited from two machines before either syncs, Adobe
+  keeps the most recently-written version and effectively discards the
+  other — there's no three-way merge like in a version-control system, which
+  is why team workflows adopt a convention (one owner per asset, or naming
+  variants) rather than relying on the sync layer to reconcile concurrent
+  edits.</li>
+<li><strong>Character Styles store style definitions, not literal formatting.</strong> A
+  saved Character Style records the attributes (font family, size, tracking,
+  color reference — itself potentially a Library color swatch) as a named,
+  reusable rule, similar in spirit to a CSS class. Applying it to new text
+  applies the <em>current</em> values of that rule; if you never explicitly relink
+  it, later edits to the rule don't retroactively update text you formatted
+  by eye instead of by applying the named style.</li>
+<li><strong>Adobe Fonts activation is a licensing handshake, not a font install in
+  the OS sense.</strong> Activating a font from fonts.adobe.com registers a license
+  entitlement against your Adobe ID and pushes a font file to a
+  Creative-Cloud-managed font cache that every signed-in Adobe app (and,
+  separately, the OS font list for some plans) can read — it isn't dropped
+  into your system Fonts folder the way a purchased font usually is, which
+  is why deactivating a font in the browser can make text using it show a
+  missing-font warning in every open document simultaneously, even ones you
+  aren't actively editing.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Install Photoshop, Illustrator, and Premiere Pro via the Creative Cloud
 desktop app if you haven't already. Create a new Library named

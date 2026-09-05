@@ -2119,6 +2119,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2305,6 +2316,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2480,6 +2502,58 @@ print-ready PDF.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Effective PPI is a real, computed ratio, not a fixed image property —
+  it's the image's native pixel dimensions divided by the physical size
+  it's actually been scaled to on the page.</strong> A 3000×3000px photo at
+  native size delivers 300 PPI on a 10-inch-wide frame, but scaling that
+  same frame up to 20 inches spreads the identical 3000 pixels across
+  double the physical area, halving the effective PPI to 150 — the pixel
+  data hasn't changed, but the density it needs to cover per inch has. This
+  is exactly why Preflight can flag "low resolution" on an image whose
+  original file was perfectly high-res: the problem is the placement scale,
+  not the source file.</li>
+<li><strong>Preflight runs its checks continuously by re-evaluating the document's
+  current state against the active profile's rule set on every relevant
+  change</strong>, rather than only when manually invoked — a rule like "flag any
+  RGB image" is a real test applied to every placed image's actual color
+  mode metadata, and a rule like "flag overset text" is checking whether
+  the text composition engine (the same story/frame flow model from Level
+  3) actually placed every character within a visible frame boundary or
+  has leftover unplaced text. This live, rule-based checking is why the
+  status-bar indicator updates the moment an issue appears or gets fixed,
+  with no separate "run preflight" step required.</li>
+<li><strong>A PDF/X preset works by constraining PDF export to a restricted,
+  standardized feature subset the press's RIP (raster image processor)
+  software is guaranteed to interpret correctly</strong> — forcing CMYK/spot-only
+  color output, flattening transparency into fully composited pixels, and
+  embedding all fonts. Transparency flattening specifically resolves
+  InDesign's live, order-dependent compositing (drop shadows, blend modes,
+  opacity — the same mechanisms from earlier compositing modules) down into
+  final, non-interactive rendered output ahead of time, because many
+  print RIPs cannot correctly interpret live transparency effects the way
+  a screen-rendering engine can.</li>
+<li><strong>Bleed exists to cover the same real-world cutting-tolerance problem
+  covered in Level 1's Illustrator module — a press's physical trim cannot
+  guarantee zero-error alignment — and the PDF's Marks and Bleeds settings
+  are what actually embed that extra margin (and any registration marks) as
+  literal extra content in the exported page boundary</strong>, beyond the
+  document's own trim size. This is why bleed has to be both set correctly
+  in Document Setup <em>and</em> explicitly enabled at export — Document Setup
+  defines how much of the artwork extends past trim in the working file,
+  while the export dialog's own setting controls whether that same margin
+  is actually included in the delivered PDF's page geometry.</li>
+<li><strong>Package performs the identical link-graph traversal described in this
+  level's pipeline-overview module — walking every Links panel entry and
+  every font reference used anywhere in the document — and copies each
+  resolved file into the new folder, then (optionally) repoints the
+  packaged copy's own link paths at the copies.</strong> A link that's offline or
+  a font that can't be located produces exactly the same class of warning
+  in Package's summary screen as Preflight's missing-link check, because
+  both are querying the same underlying link-resolution data — Package
+  just acts on it by copying files rather than merely flagging them.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Take a multi-page document with at least one full-bleed image and run it
 through the full pipeline: fix every Preflight-flagged issue, confirm

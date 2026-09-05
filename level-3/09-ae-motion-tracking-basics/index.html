@@ -1760,6 +1760,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2283,6 +2294,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-actually-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How It Actually Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#exercise" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2443,6 +2465,63 @@ point tracking and the simpler <strong>Track Camera</strong> for 3D scenes.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="how-it-actually-works">How It Actually Works<a class="headerlink" href="#how-it-actually-works" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>2D point tracking is per-frame template matching, not motion
+  prediction.</strong> At each step, After Effects takes the exact pixel pattern
+  currently inside the feature region and searches the <em>next</em> frame's
+  pixels within the search region for the location that best matches that
+  pattern (typically via a correlation score, similar in principle to the
+  cross-correlation used for audio sync in Level 2's multi-cam module, just
+  computed on 2D pixel neighborhoods instead of a 1D waveform). Whichever
+  location scores highest becomes that frame's tracked position, and the
+  feature region's reference pattern is then updated (or kept, depending on
+  settings) for the next comparison — which is exactly why picking a
+  high-contrast, visually distinct feature matters: a flat, low-contrast
+  area produces many similarly-scoring candidate matches nearby, giving the
+  algorithm nothing to reliably lock onto, and why drift compounds once a
+  bad match is accepted as the new reference pattern for the following
+  frame.</li>
+<li><strong>A Corner Pin track's four independently-tracked points are converted
+  into a perspective transform matrix applied to the target layer every
+  frame.</strong> Rather than moving the whole layer as a rigid rectangle, Corner
+  Pin computes the specific projective transformation that maps the target
+  layer's four corners onto wherever the four tracked points currently sit
+  — the same class of transform that lets a flat rectangle appear to tilt
+  and recede in perspective, recalculated fresh at each frame from that
+  frame's four tracked positions.</li>
+<li><strong>Applying a track writes literal keyframes onto the target layer's
+  actual properties — it's a one-time data transfer, not a live link
+  between the two layers.</strong> Clicking Apply reads the tracker's computed
+  per-frame values and creates ordinary Position/Rotation/Scale (or Corner
+  Pin) keyframes on the target, identical in kind to hand-placed keyframes
+  from Module 2 — which is why re-running Analyze on the source footage
+  afterward does <em>not</em> automatically update a graphic that was already
+  applied; the target's keyframes are now independent data, disconnected
+  from the tracker.</li>
+<li><strong>Track Camera solves for both camera motion and 3D scene geometry
+  simultaneously using structure-from-motion: it finds a consistent set of
+  3D point positions and a camera path that would produce the observed 2D
+  pixel motion across the whole clip.</strong> This is inherently an
+  optimization problem with many candidate high-contrast features tracked
+  in parallel across many frames, solved for the single camera-path-plus-
+  3D-points combination that best explains all of them together — which is
+  exactly why it needs real parallax (points at different depths moving
+  differently as the camera shifts) to be solvable: a purely static shot
+  gives identical 2D motion for every point regardless of its 3D depth, so
+  there's no depth information the solve can distinguish.</li>
+<li><strong>Warp Stabilizer works by tracking many points across the frame (much
+  like a Track Camera pass) to estimate the <em>unwanted</em> camera motion, then
+  applies an inverse transform to cancel it out, before subspace-warping the
+  frame edges to fill the resulting gaps.</strong> Removing camera shake means
+  each frame has to be repositioned/rescaled to compensate — which
+  necessarily pushes some original frame content outside the visible
+  boundary and requires either cropping in or synthetically extending edge
+  pixels (the "Subspace Warp" method), which is the actual computational
+  reason the analysis pass takes real time: it's solving the same kind of
+  motion estimation problem as ordinary tracking, just densely across the
+  whole frame rather than one feature.</li>
+</ul>
 <h2 id="exercise">Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
 <p>Track a moving element in a handheld or phone-screen clip using a
 Transform or Corner Pin track, apply it to a new graphic/text layer, and
