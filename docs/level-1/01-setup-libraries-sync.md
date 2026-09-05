@@ -119,6 +119,56 @@ web) at no extra cost.
 | Open a cloud document | File > Open Cloud Document |
 | Browse/activate Adobe Fonts | fonts.adobe.com, or the Aa icon in any font dropdown |
 
+## How It Actually Works
+
+A Library isn't a folder of files that gets copied around — it's a client
+for a per-asset sync protocol against Adobe's Creative Cloud servers, and
+understanding that model explains almost every quirk you'll hit later.
+
+- **Each asset is its own sync unit, not the whole Library.** When you drag
+  a Graphic into the Libraries panel, Adobe stores the underlying editable
+  data (for a Photoshop-origin Graphic, effectively a mini-PSD with its
+  layers, not a flattened bitmap) plus a rendered preview thumbnail as
+  *separate* cloud objects, each with its own asset ID and version number.
+  That's why updating one swatch doesn't re-upload your whole Library, and
+  why a huge Library with one giant Graphic syncs that one asset slowly
+  while everything else stays instantly available.
+- **What a placed instance actually stores is a reference, not a copy.**
+  When you place a Library Graphic into a Photoshop document, Photoshop
+  embeds a **linked Smart Object** whose contents point at that asset's ID
+  and current version, not a baked-in copy of the pixels at place-time.
+  That reference is what makes "Update" possible later (Module 9) — the
+  Smart Object re-fetches whatever version the asset ID currently resolves
+  to. If you instead flatten or rasterize a placed Graphic, you sever that
+  reference permanently; there's no metadata left connecting it back to the
+  Library asset.
+- **Sync is asynchronous and conflict-resolved by version, not by merge.**
+  Each app maintains a local cache of every Library you've synced (so
+  Libraries still open offline), and reconciles with the cloud on a
+  change-detection loop rather than continuously streaming every keystroke.
+  If the same asset is edited from two machines before either syncs, Adobe
+  keeps the most recently-written version and effectively discards the
+  other — there's no three-way merge like in a version-control system, which
+  is why team workflows adopt a convention (one owner per asset, or naming
+  variants) rather than relying on the sync layer to reconcile concurrent
+  edits.
+- **Character Styles store style definitions, not literal formatting.** A
+  saved Character Style records the attributes (font family, size, tracking,
+  color reference — itself potentially a Library color swatch) as a named,
+  reusable rule, similar in spirit to a CSS class. Applying it to new text
+  applies the *current* values of that rule; if you never explicitly relink
+  it, later edits to the rule don't retroactively update text you formatted
+  by eye instead of by applying the named style.
+- **Adobe Fonts activation is a licensing handshake, not a font install in
+  the OS sense.** Activating a font from fonts.adobe.com registers a license
+  entitlement against your Adobe ID and pushes a font file to a
+  Creative-Cloud-managed font cache that every signed-in Adobe app (and,
+  separately, the OS font list for some plans) can read — it isn't dropped
+  into your system Fonts folder the way a purchased font usually is, which
+  is why deactivating a font in the browser can make text using it show a
+  missing-font warning in every open document simultaneously, even ones you
+  aren't actively editing.
+
 ## Exercise
 
 Install Photoshop, Illustrator, and Premiere Pro via the Creative Cloud

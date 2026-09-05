@@ -123,6 +123,59 @@ across a map) that a pattern's regular grid can't represent.
 | Group related swatches | Swatches panel > New Color Group |
 | Share a pattern across apps/documents | Drag swatch into the Libraries panel |
 
+## How It Actually Works
+
+- **A pattern swatch stores one tile plus a repeat-geometry rule, and the
+  fill engine paints copies of that tile procedurally at render time.**
+  Rather than baking a large repeated image, Illustrator keeps the small
+  source artwork and a small set of tiling parameters (tile type, spacing,
+  overlap); whenever it needs to render an object filled with that pattern,
+  it computes how many tile copies are needed to cover the object's bounds
+  and its offsets (a straight grid, or a half-tile row/column offset for
+  Brick, or a hex lattice offset for Hex), then stamps the same tile
+  artwork at each computed position. This is exactly why editing the master
+  pattern (re-entering pattern-editing mode) instantly updates every object
+  filled with it — every fill is a live reference to one small piece of
+  source geometry, not an independently rendered copy.
+- **The tilde-drag pattern transform works because the fill's tile-
+  placement transform and the object's own geometry transform are stored as
+  two separate matrices.** An object carries its own position/scale/
+  rotation matrix for its path geometry, and — independently — a
+  transform matrix specifically for how the pattern fill is tiled inside
+  that geometry. Holding tilde while dragging tells Illustrator to modify
+  only the pattern's transform matrix and leave the object's geometry matrix
+  untouched, which is mechanically identical to why "Transform Patterns"
+  can be checked or unchecked independently of "Transform Objects" in the
+  numeric Scale/Rotate dialogs — they're editing different stored data.
+- **A Symbol is a single master artwork definition referenced by many
+  lightweight instance records, scoped to one document's internal symbol
+  table.** Each placed instance on the canvas stores only a reference to
+  the symbol definition plus its own position/scale/rotation/tint — not a
+  copy of the artwork itself. Editing inside Symbol Editing Mode changes the
+  one master definition every instance points to, which is why every
+  instance updates together; this is the same reference-vs-copy pattern as
+  a Library Graphic (Level 1, Module 9), just implemented as a document-
+  local table rather than a cloud-synced asset, which is exactly why it
+  doesn't automatically follow the artwork into a different file.
+- **The Symbol Sprayer's scattered instances are ordinary symbol instances
+  created programmatically along the brush's path, each with slightly
+  randomized transform values.** As you drag, the tool samples points along
+  your brush stroke and creates a new instance reference at each one,
+  applying small randomized variance (within ranges set in the tool's
+  options) to rotation, scale, and spacing so the scatter doesn't look
+  mechanically uniform — the companion Shifter/Sizer/Spinner/Stainer tools
+  then simply edit those same per-instance transform values (position,
+  scale, rotation, and a tint blend respectively) on whichever instances you
+  brush over afterward.
+- **Dragging a pattern swatch into the Libraries panel serializes the tile
+  artwork and its tiling parameters into a Graphic asset**, which is why
+  the pattern behaves like any other Library Graphic once it's there
+  (linked, updatable, cross-app) but why a symbol dragged the same way loses
+  its "instance" semantics — the Library only ever stores the artwork
+  definition, not a document-scoped table of live references, so reusing it
+  in Photoshop necessarily means placing it as a Smart Object rather than
+  something that behaves like an in-Illustrator symbol instance.
+
 ## Exercise
 
 Design a small repeating motif and turn it into a pattern swatch using

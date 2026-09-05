@@ -100,6 +100,56 @@ edit a composition in AE and the change appears in Premiere's timeline
 | Fix a broken link | Right-click clip > Restore Media... |
 | Final full-quality render | File > Export Media (Premiere renders AE content in) |
 
+## How It Actually Works
+
+- **Dynamic Link runs a background server process (Adobe Dynamic Link
+  Manager / an After Effects render engine instance) that Premiere queries
+  for rendered frames on demand, rather than Premiere reading a rendered
+  file from disk.** When Premiere's playhead needs a frame from a Dynamic
+  Link clip, it sends a request (composition + frame time) to that
+  background AE instance, which evaluates the composition exactly as
+  described in Level 3's compositing/effects module (walking the layer
+  stack, applying effects, compositing) and returns the rendered pixels
+  back to Premiere for that one frame — live, no intermediate file ever
+  touches disk during ordinary editing.
+- **This is exactly why playback is heavier than a native clip: every frame
+  costs a full After Effects composite, computed fresh, instead of a
+  decode of pre-rendered video.** A native Premiere clip only has to decode
+  a compressed video frame; a Dynamic Link frame has to run the entire AE
+  render pipeline (layer evaluation, effect stack, keyframe interpolation)
+  for that exact timestamp — the render cost scales with composition
+  complexity, which is the mechanical reason a heavier AE comp (more
+  layers, more effects, more precomps) makes Dynamic Link playback
+  progressively slower while a native clip's playback cost stays roughly
+  constant regardless of its content.
+- **"Edit Original" and the automatic timeline update work because the
+  Premiere clip stores a reference to the `.aep` project file plus a
+  specific composition name, not a copy of any rendered frame data.**
+  Saving the AE project simply updates that file on disk; Premiere's
+  Dynamic Link connection detects the file has changed and invalidates its
+  cached preview frames for that composition, prompting a fresh render
+  request next time those frames are needed — the same "reference plus
+  version/modification signal, re-resolved on demand" pattern from this
+  level's pipeline-overview module, here scoped to a specific AE project
+  file and composition.
+- **Render and Replace performs a real one-time render to a flattened
+  intermediate file and substitutes that file for playback, while keeping
+  the original Dynamic Link reference available underneath to revert to.**
+  It isn't disabling Dynamic Link — it's caching a full-quality rendered
+  proxy so Premiere's playback engine can decode a normal video file
+  instead of issuing live per-frame render requests to AE, trading
+  "instant reflection of AE edits" for "smooth scrubbing," recoverable at
+  any point by switching back to the underlying live link.
+- **A broken link is a dangling file-path reference, and Restore Media is
+  literally re-pointing that reference at a new path** — mechanically
+  identical to relinking offline media in Premiere's Project panel or
+  re-establishing a missing Smart Object source in Photoshop. The
+  composition name stored alongside the path is what lets Restore Media
+  reconnect to the *same* composition inside a relocated `.aep` file,
+  rather than merely reconnecting to "some project file" — the reference
+  the whole time was really a (file path, composition name) pair, not just
+  a bare file path.
+
 ## Exercise
 
 Build a short composition in After Effects, import it into a Premiere

@@ -99,6 +99,49 @@ been used can be refreshed to match, all from one source of truth.
 | Access Library colors in Premiere | Window > Essential Graphics > color swatch > Libraries tab |
 | Share a Library with a collaborator | Libraries panel dropdown > Invite People |
 
+## How It Actually Works
+
+- **A linked Smart Object is a reference wrapper, not a placed copy of
+  pixels or paths.** When you drag a Library Graphic into Photoshop, what
+  actually gets written into the `.psd` is a Smart Object layer whose
+  content payload is "asset ID + version" rather than embedded artwork data.
+  On open, Photoshop resolves that reference by fetching (or reading from
+  local cache) the actual Illustrator data for that asset ID and rendering
+  it into the Smart Object's bounding box — which is exactly why
+  double-clicking it round-trips you into Illustrator editing the *original*
+  document, not a disconnected copy: there only ever was one document, just
+  referenced from two apps.
+- **"Update" isn't a live push — it's each placed instance re-checking a
+  version pointer.** Editing a Library asset writes a new version to
+  Adobe's cloud store and bumps the asset's current-version marker; every
+  app showing that Library reflects the *swatch/style list* updating almost
+  immediately because that's cheap metadata. But a Graphic already placed
+  on a canvas keeps referencing whatever version ID it was placed with,
+  by design (so your file doesn't silently change every time you open it
+  after someone else edits a shared asset) — the explicit Update/Relink
+  action is the moment that placed instance's version pointer is advanced
+  to match the Library's current one and the content is re-fetched.
+- **Color swatches and Character Styles differ from Graphics in exactly one
+  structural way: they carry no separate rendered geometry, just parameter
+  values.** A color swatch is stored as a small numeric record (color space
+  + component values); a Character Style is a named bundle of text
+  attributes referencing a color swatch by asset ID rather than a literal
+  value. That's why they can update *instances* in place far more visibly
+  and immediately than a Graphic can — applying a Character Style to text
+  doesn't embed a copy of the values, it applies a live reference to the
+  style asset, so a later edit to that style's stored parameters is picked
+  up the next time the app re-evaluates styled text, with none of the
+  "placed geometry" resolution step a Graphic requires.
+- **Cross-app availability depends on which apps' engines know how to
+  interpret which asset type**, which is the real reason Premiere's support
+  for Library assets is narrower than Photoshop/Illustrator's — Premiere's
+  Essential Graphics engine can resolve color and (with support) certain
+  graphic types because it shares Adobe's Motion Graphics template
+  rendering pipeline, but it has no native raster/vector layer-editing
+  engine the way Photoshop and Illustrator do, so some asset types that
+  round-trip cleanly between those two simply have no equivalent renderer
+  to resolve into inside Premiere.
+
 ## Exercise
 
 Using the `Mastery Path Brand Kit` Library from Module 1: add two more

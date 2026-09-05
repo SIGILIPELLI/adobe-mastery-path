@@ -104,6 +104,50 @@ this module, a rendered preview file is all you need.
 | RAM Preview (full speed) | 0 (numeric keypad) |
 | Add comp to Render Queue | Composition > Add to Render Queue |
 
+## How It Actually Works
+
+- **Interpolation is curve-fitting between numeric values, and "linear" is
+  the default curve.** With two keyframes set, After Effects doesn't
+  actually store any of the in-between frames — it computes each one on the
+  fly by evaluating a function of time between the two keyframe values.
+  With no easing applied, that function is linear: equal time steps produce
+  equal changes in value, which is exactly why default motion feels robotic
+  — it starts and stops instantly at full speed with no acceleration or
+  deceleration, unlike real-world motion.
+- **Easy Ease reshapes the velocity curve, not the position values you
+  set.** Pressing F9 doesn't move your keyframes' values or timing; it
+  changes each keyframe's incoming/outgoing tangent handles on the
+  underlying Bézier interpolation curve so velocity approaches zero near the
+  keyframe instead of holding constant — visible directly in the Graph
+  Editor as the value curve flattening out at both ends into an S-shape
+  instead of a straight diagonal line.
+- **Composited layers are evaluated top-down, per frame, through each
+  layer's full property stack.** For every frame you scrub to, After
+  Effects walks the layer stack from top to bottom, evaluates each layer's
+  animated transform properties and effects at that exact time, rasterizes
+  each into an intermediate buffer, then composites them together according
+  to blend mode and opacity — which is why stacking order matters
+  identically to Photoshop layers, and why RAM Preview (numeric 0) exists
+  separately from Spacebar: it pre-renders every frame into memory first so
+  playback isn't bottlenecked by that per-frame composite math happening
+  live.
+- **A composition is itself a kind of layer, which is why nesting works.**
+  Internally, a comp is just another asset with a duration and a rendered
+  output — when you drag one comp into another as a "precomp" layer
+  (a pattern you'll use heavily from Level 3 onward), After Effects treats
+  it exactly like any footage layer: it evaluates the entire nested comp's
+  stack first to produce a flattened frame, then composites that frame into
+  the parent, same as it would a video clip.
+- **The Render Queue is a separate, deterministic re-evaluation pass, not a
+  recording of your preview.** Rendering doesn't capture what you saw while
+  scrubbing; it walks the composition frame-by-frame from time zero,
+  re-evaluating every layer's properties and effects at each exact frame
+  time and encoding the result directly to the output format — which is why
+  a render can look different from a rough RAM Preview if a property
+  depends on something view-dependent (like a resolution/quality setting)
+  that differs between the interactive viewer and the Output Module
+  settings.
+
 ## Exercise
 
 Create a new 5-second composition. Add a text layer with your name or a

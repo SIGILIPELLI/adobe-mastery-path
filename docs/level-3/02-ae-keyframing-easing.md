@@ -105,6 +105,52 @@ motion with the Graph Editor and easing presets.
 | Rove keyframes for constant speed | Right-click path keyframe > Rove Across Time |
 | Freehand keyframes from a live drag | Window > Motion Sketch |
 
+## How It Actually Works
+
+- **Interpolation between two keyframes is literally curve-fitting a
+  function through two (value, time) points, and every interpolation type
+  is just a different family of curve.** Linear connects them with a
+  constant-slope straight line — equal time steps yield equal value
+  changes, hence uniform speed and the "robotic" feel. Easy Ease fits a
+  Bézier curve whose tangent (first derivative, i.e. velocity) is forced to
+  zero at the keyframe, so the value's rate of change genuinely approaches
+  zero as it nears that point — this is a real velocity calculation, not a
+  cosmetic ease.
+- **The Speed Graph is the literal first derivative of the Value Graph,
+  which is why it's more intuitive for tuning ease.** The Value Graph plots
+  the property's value over time; differentiating that curve with respect
+  to time gives instantaneous velocity, which is exactly what the Speed
+  Graph displays directly. A flat zero on the Speed Graph at a keyframe
+  means the Value Graph's slope is zero there (motion has actually stopped,
+  not just slowed near-imperceptibly), and dragging a Bézier handle on
+  either graph reshapes the same underlying curve — you're just looking at
+  two different derivatives of one mathematical object.
+- **A spatial motion path is the Position property's value curve rendered
+  directly in 2D/3D space instead of on a time axis** — because Position
+  has two or three simultaneous numeric channels (x, y, [z]), After Effects
+  draws the parametric curve those channels trace through space rather than
+  a single value-over-time line, with per-frame dot spacing encoding speed:
+  since frames are evenly spaced in time, dots bunched close together
+  mean the position curve is covering less distance per frame, i.e. moving
+  slower at that point in the path.
+- **Roving keyframes solve a real timing-distribution problem: without
+  them, each keyframe's *time* is fixed, so an intermediate point on a
+  curved path forces a deceleration/acceleration at that exact frame
+  regardless of the path's shape.** Marking a keyframe as roving tells
+  After Effects to treat its *value* (spatial position on the path) as
+  fixed but let its *timing* float, then redistributes timing across all
+  roving keyframes so that equal path-distance is covered in equal time —
+  a numeric solve, not a preset, over the arc length of the spatial curve
+  between the fixed endpoint keyframes.
+- **Motion Sketch works by recording your mouse's position at the
+  application's frame rate while you drag, and writing one keyframe per
+  sampled frame.** That's why freehand Motion Sketch output tends to be
+  noisy/jittery compared to hand-placed keyframes — every small mouse
+  tremor becomes a literal keyframe — and why a Smoother pass (Keyframe
+  Assistant) afterward is standard: it's a real curve-smoothing algorithm
+  reducing the keyframe count and fitting a gentler curve through the
+  captured points, not just relabeling the same data.
+
 ## Exercise
 
 Animate the title card's entrance with at least three eased properties

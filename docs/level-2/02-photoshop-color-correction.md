@@ -131,6 +131,57 @@ place rather than stacking several separate adjustment layers.
 | On-image Curves adjustment tool | Curves Properties panel, top-left hand icon |
 | Convert layer to Smart Object first | Layer > Smart Objects > Convert to Smart Object |
 
+## How It Actually Works
+
+- **A curve is a remapping function applied per input tone value, not a
+  freehand paint stroke.** Every point you place defines a coordinate on an
+  input→output mapping; Photoshop interpolates a smooth spline through all
+  placed points and applies the resulting function to every pixel whose
+  original value falls along that curve — a pixel at input value 128 simply
+  looks up what output value the curve currently assigns to 128. That's why
+  an S-curve boosts contrast without an explicit "increase contrast"
+  operation: pulling shadows down and highlights up is literally
+  remapping dark input values to darker outputs and light input values to
+  lighter outputs, while midtones near the curve's unmoved center stay
+  close to their original value.
+- **Per-channel curves work because a color image is three independent
+  numeric planes.** Selecting the Blue channel and pulling its shadow region
+  down doesn't touch Red or Green at all — it remaps only the blue
+  component of every pixel below a certain blue value. A blue-tinted
+  shadow has an elevated blue value relative to red/green at that
+  brightness; lowering just blue's curve there brings the three channels
+  back into closer balance without an explicit "remove blue cast"
+  operation — you're just applying arithmetic to one plane of the data.
+- **Vibrance and Saturation use different weighting formulas on the same
+  underlying data, which is the entire reason they look different.**
+  Saturation applies a uniform multiplier to every pixel's saturation value
+  regardless of how saturated it already is. Vibrance's algorithm
+  weights that multiplier inversely to existing saturation — it boosts
+  low-saturation pixels much more than already-saturated ones, and further
+  applies extra damping specifically in skin-tone hue ranges. This is a
+  deliberate, hardcoded protection in Adobe's Vibrance implementation, not
+  an emergent side effect — it's why Vibrance is the safer default for
+  photos with faces.
+- **Camera Raw Filter and separate adjustment layers apply changes at
+  different points in the same rendering pipeline.** Camera Raw operates on
+  the Smart Object's source data through a single unified processing
+  pipeline (demosaic-equivalent tone/color math, done once, in one pass)
+  before Photoshop's normal layer-compositing engine ever runs, which is why
+  it's efficient for a full-image grade but only exposes one mask for the
+  whole filter. Adjustment layers instead operate at the Photoshop
+  compositing stage itself, each with its own independent mask evaluated
+  per-pixel during the same top-down compositing walk covered in earlier
+  modules — that's the structural reason stacking several masked adjustment
+  layers gives you localized control that one Camera Raw pass structurally
+  cannot.
+- **"Preserve Luminosity" in Color Balance works by converting to a
+  luminance-preserving color model before and after the shift.** Internally,
+  Photoshop measures the pixel's luminance value before applying the
+  Cyan-Red/Magenta-Green/Yellow-Blue shifts, then rescales the resulting RGB
+  values after the shift so the same luminance value is reproduced — this
+  is a real corrective calculation each time, not a checkbox that merely
+  limits how far you can drag the sliders.
+
 ## Exercise
 
 Open a photo with a visible color cast (indoor tungsten lighting or an

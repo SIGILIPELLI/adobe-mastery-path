@@ -109,6 +109,55 @@ from Module 1.
 | Before/after comparison for portfolio | Lightroom Y (Loupe before/after toggle) |
 | Archive a finished project | Collect Files (Premiere) / Package (InDesign) |
 
+## How It Actually Works
+
+- **Frame.io comments attach to a specific timecode by recording the exact
+  frame number (or SMPTE timecode) the client's playhead was on when they
+  commented, and Premiere's Frame.io panel converts that stored timecode
+  into a literal marker at the matching position on the sequence
+  timeline.** This is a real coordinate-system translation, not a vague
+  "attached to the project" note — which is exactly why a comment reliably
+  lands on the correct frame in the editor's timeline regardless of how the
+  client scrubbed to find it, and why timecode-specific review is more
+  precise than an email describing a moment by eye.
+- **A version log ("v1 sent," "v2 addressed," "v3 approved") is doing the
+  same job a real version-control system does formally: giving every
+  reviewed state a stable, referenceable identity separate from "whatever
+  is currently in the working file."** Without it, "the approved version"
+  is an ambiguous pointer that silently drifts every time the working file
+  is saved over — the log is the human-maintained equivalent of a commit
+  history, which is precisely why it matters most across multiple revision
+  rounds where more than one draft has been shared.
+- **Final delivery flattening is irreversible for the same structural
+  reason established in Module 1: every live reference (Dynamic Link,
+  Library asset, InDesign link) gets resolved into permanent output data
+  with no reference left to trace back to editable sources.** This is
+  precisely why the archive step has to capture the *pre-flattened* project
+  (source files, still-linked assets) as its own separate snapshot — the
+  final delivered MP4/PDF alone cannot be un-flattened back into an
+  editable state months later if a client requests a revision; only the
+  archived source project, with its links still intact, can be reopened and
+  actually re-edited.
+- **A font or stock asset's license is a legal permission scope attached to
+  the file, entirely independent of whether the file technically embeds or
+  copies cleanly.** Nothing in InDesign's Package, an After Effects
+  `.mogrt`'s font-bundling option, or a stock footage file's format
+  enforces license compliance — those mechanisms will happily copy or
+  embed a font/asset regardless of whether the license permits that
+  specific redistribution, which is exactly why license-checking has to be
+  a separate, deliberate human step at delivery time rather than something
+  the software verifies for you.
+- **Before/after comparisons work as portfolio evidence because they expose
+  the actual delta the Develop parameters (or grade, or layout) produced
+  against the same underlying source data — the identical mechanism
+  covered in Lightroom's non-destructive editing model.** Toggling Y in
+  Loupe view re-renders the same raw file twice: once with the current
+  edit-parameter set applied, once with it reset to as-shot defaults — a
+  real computed comparison of two renders from one source, not two
+  independently captured images, which is what makes it a meaningful
+  demonstration of the actual work done rather than just two different
+  photos.
+
 ## Exercise
 
 Take one finished piece from an earlier module (video or print) and run a

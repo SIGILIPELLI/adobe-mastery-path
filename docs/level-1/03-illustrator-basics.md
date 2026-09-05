@@ -121,6 +121,53 @@ raster export is what actually ships.
 | Export artboards (with sizes/formats) | File > Export > Export As |
 | Fit artboard to window | ⌘/Ctrl+0 |
 
+## How It Actually Works
+
+Understanding what a path *is* under the hood explains why vector editing
+behaves so differently from raster editing.
+
+- **A path is a sequence of Bézier segments, defined by four numbers per
+  segment.** Each anchor point stores an x/y position plus two optional
+  control-handle offsets (in/out). The curve between two anchors is a cubic
+  Bézier: the renderer walks a parametric variable `t` from 0 to 1 and
+  evaluates a weighted blend of the two anchor positions and their two
+  handles at each step. This is why dragging a handle further out makes a
+  curve "more pronounced" — you're increasing the weight that control point
+  contributes to the blend, not manually reshaping pixels.
+- **Scaling is re-evaluating the same math at new coordinates, not
+  resampling an image.** When you scale a vector shape up, Illustrator just
+  multiplies every anchor and handle coordinate by the scale factor and
+  re-renders the Bézier curves at the new size — there's no original data to
+  "run out of," which is the literal reason a vector logo scales to a
+  billboard with identical sharpness. A raster image, by contrast, has to
+  interpolate brand-new pixel values between the ones it actually has, which
+  is inherently a guess.
+- **Fill and Stroke are rendered as two separate operations on the same
+  path geometry.** The Fill rasterizes everything enclosed by the path's
+  boundary (using its winding rule to decide "inside" for self-intersecting
+  or compound paths); the Stroke is a *second* pass that traces a ribbon of
+  a given width, centered on (or offset from) the same path outline. This
+  is why a corner-radius or Pen-tool edit updates both instantly and
+  identically — they read from one shared path, not two independently
+  drawn outlines.
+- **Placing a raster image doesn't convert it — it embeds or links a
+  bitmap object alongside your vector art.** Illustrator's canvas is a
+  mixed-model document: some objects are vector paths, others (placed
+  images) are references to pixel data with their own transform matrix. The
+  Pen tool and path math never touch that pixel data; that's exactly why
+  "tracing" a placed photo with the Pen tool is a fully manual, human
+  judgment call — Illustrator has no automatic bridge from pixel edges back
+  to anchor points (Image Trace, covered later, approximates this
+  algorithmically but produces its own new path data, not a recovery of an
+  "original" vector).
+- **A closed path is stored as a loop with an explicit closing flag**, not
+  just anchors that happen to line up — which is why clicking back on the
+  first anchor snaps and locks the path shut (enabling fill) rather than
+  merely placing a coincident final point; an open path with visually
+  touching endpoints still renders with no fill and behaves differently
+  under operations like Offset Path or the Pathfinder tools you'll use in
+  Module 7.
+
 ## Exercise
 
 Create a new document with three artboards side by side (use **Window >

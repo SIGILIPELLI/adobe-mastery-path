@@ -119,6 +119,51 @@ app, and fix the source.
 | Screen-insert shot | After Effects | Warp Stabilizer, Perspective corner pin tracking |
 | Handout | InDesign | Grids/masters, paragraph/object styles, PDF export |
 
+## How It Actually Works
+
+- **The review checklist in Step 6 is checking that the same underlying
+  data (a graded photo export, a wording string, a treatment style) was
+  routed through two different rendering pipelines rather than recreated
+  independently in each.** A Lightroom-exported JPEG carries baked-in RGB
+  pixel values from Lightroom's Develop pipeline; After Effects composites
+  that file as-is, while InDesign places it into its own print color
+  workflow. Both apps start from the identical exported pixels, so any
+  visible mismatch traces back to something happening *after* that shared
+  export — a color-space conversion difference for print CMYK output, or a
+  second, independent grading pass applied inside one app but not the
+  other — rather than the Lightroom source itself having diverged.
+- **The video and the print handout are fundamentally different rendering
+  targets for the same source photo: one composites RGB frames for screen
+  display (Rec. 709 or sRGB), the other converts to CMYK ink separations
+  for a press or printer.** This is the identical RGB-vs-CMYK gamut
+  distinction from Level 1's Illustrator module, applied to a photograph
+  instead of vector fills — a graded photo that reads accurately on screen
+  in the AE composite can legitimately shift somewhat once InDesign's PDF
+  export converts it toward CMYK, which is a real, physically-grounded
+  color-reproduction limit, not evidence the shared grade "failed."
+- **Every reused element in this project (the graded photo, the headline
+  wording, the track's applied keyframes, a Sync'd Develop preset) follows
+  the same reference-versus-copy pattern this whole course keeps
+  returning to**: a Lightroom preset stores parameter values applied fresh
+  to each photo's own raw data at render time; an applied motion track
+  writes literal keyframe data once, disconnected from the tracker
+  afterward; a paragraph style's Based On chain resolves properties live at
+  layout time. Recognizing which of those three mechanisms underlies a
+  given piece of reused content is exactly what determines whether editing
+  the "source" later will or won't propagate automatically — which is the
+  practical, checkable question behind Step 6's "trace it back to the
+  source" instruction.
+- **Rendering the AE composition to H.264 for review versus ProRes for
+  further Premiere editing is a real tradeoff in how much of the
+  frame-by-frame compositing math survives for later use.** H.264 discards
+  the alpha channel and re-encodes the flattened frame with lossy
+  compression (see this level's compositing module); ProRes at 4444
+  preserves alpha and uses comparatively light compression, which is why
+  the tracked screen-insert and any composited elements stay editable and
+  recombinable if the explainer needs to be re-cut in Premiere later,
+  while an H.264 review copy has already permanently flattened and
+  compressed every layer into one opaque stream.
+
 ## Stretch goals
 
 - Export the After Effects title text as a separate alpha-channel render

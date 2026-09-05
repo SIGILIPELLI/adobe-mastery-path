@@ -116,6 +116,50 @@ deliverable that looks off.
 | Poster | Photoshop | Smart Objects from Library, layer masks, adjustment layers |
 | Promo video | Premiere | Multi-cam sync/cut, audio mixing, Essential Graphics title |
 
+## How It Actually Works
+
+- **Every "consistency check" in Step 5 is really verifying that a shared
+  reference resolved identically in each app, not that a human eyeballed a
+  close match.** The photo grade, the headline treatment, and the
+  background pattern each trace back to one authoritative source: a
+  recorded Action's parameters, a Library Graphic's version, or a `.mogrt`'s
+  exposed properties. When something drifts visually, the actual cause is
+  always one specific link in that chain being broken — a photo processed
+  by hand instead of through the Batch-run Action, a headline retyped in
+  Photoshop instead of pulled from the Library Graphic, a title rebuilt from
+  scratch in Premiere instead of dropped in from the exported `.mogrt` —
+  which is exactly why "fix the source, not the symptom" is the right
+  instinct: the visual mismatch is a downstream symptom of a specific
+  reference having been bypassed somewhere upstream.
+- **The photo set and the poster/video grades can drift for a structural
+  reason even when every asset is correctly linked: RGB (Photoshop/
+  Illustrator) and Rec. 709 (Premiere/Lumetri) are different working color
+  spaces evaluating the same numeric grade differently**, as covered in this
+  level's color-correction module — matching the *mood* across deliverables
+  built in different apps means matching the intent of a grade (its
+  direction and relative strength), not assuming identical slider values
+  will render identically once decoded through a different app's color
+  pipeline.
+- **The whole campaign's reuse strategy rests on the same three reference
+  mechanisms stacked together**: Creative Cloud Library assets (cross-app,
+  cross-document references resolved by asset ID and version), a `.mogrt`'s
+  exposed-parameter whitelist (a locked structure with a small set of
+  editable hooks), and a Photoshop Action's recorded, replayable command
+  sequence (deterministic operations re-applied to new source data). Each
+  solves a different kind of "keep many outputs synchronized with one
+  source" problem — asset identity, template safety, and repeatable batch
+  transformation, respectively — which is why a real production pipeline
+  layers all three rather than relying on any single one to do everything.
+- **A batch-processed photo set inherits any grading error uniformly and
+  silently across every file, because the Action has no awareness of
+  per-photo differences.** If the recorded Camera Raw parameters were tuned
+  against one photo's specific exposure and white balance, running that
+  same Action against photos shot under different lighting applies the
+  identical absolute correction to all of them — correctly for the sample
+  photo, and by exactly the same amount (right or wrong) for every other
+  one, since the Action has no per-file adaptive logic, only a replayed
+  fixed sequence of commands.
+
 ## Exercise
 
 Complete all four deliverables — photo set, background, poster, and promo

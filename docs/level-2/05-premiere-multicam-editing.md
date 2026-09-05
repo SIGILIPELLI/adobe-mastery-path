@@ -98,6 +98,53 @@ end.
 | Reassign an already-cut segment's angle | Select segment, click a different tile |
 | Convert to a normal per-cut sequence | Right-click multi-cam clip > Flatten |
 
+## How It Actually Works
+
+- **Audio sync works by cross-correlating waveforms, not by recognizing
+  content.** Premiere converts each clip's audio track to a numeric
+  amplitude-over-time signal and slides one signal against the other,
+  computing a correlation score at each possible time offset; the offset
+  that produces the highest correlation (the waveforms line up most
+  closely) is taken as the sync point. This is why a shared, distinct sound
+  event — a clap, a door slam, any sharp transient — helps: a transient
+  creates a sharp, unambiguous spike that correlates strongly at exactly one
+  offset, whereas two clips of near-silent room tone have almost no
+  distinguishing waveform shape for the algorithm to lock onto, and can sync
+  to the wrong offset with high confidence.
+- **A Multi-Camera Source Sequence is a nested sequence with a synchronized
+  time offset stored per angle, not a merged file.** Each camera's clip
+  keeps its own independent media reference; what the sync step actually
+  computes and stores is a per-clip time offset so that "sequence time T"
+  maps to the correct in-point on every angle simultaneously. Editing in
+  multi-cam view never re-encodes or merges the footage — it's recording,
+  for each timeline segment, which one of those pre-computed offsets/angles
+  is "live," which is why switching angles is instantaneous with zero
+  render delay.
+- **Cutting live while playing writes a cut point at the exact frame the
+  angle-switch command is received**, using the same underlying edit-
+  decision-list mechanism from Level 1's basics module — pressing a number
+  key doesn't perform an edit "later," it inserts a new segment boundary in
+  the nested sequence's angle-assignment track at the current playhead
+  position, in real time, the instant the keypress event fires.
+- **Multi-camera grid preview is more decode-intensive than normal
+  playback because every visible tile has to be decoded and composited
+  simultaneously, not just the one angle that's "live."** The Program
+  Monitor's grid view decodes every synced camera's frame at the current
+  playhead position in parallel so you can visually compare them — this is
+  the actual reason multi-cam preview is noticeably more demanding on a
+  machine than single-clip playback, and why proxies (lower-resolution
+  stand-in files linked to the same source) are commonly used specifically
+  during multi-cam cutting sessions.
+- **Flatten resolves the nested angle-assignment structure into literal,
+  separate clip instances on the timeline.** Before flattening, the
+  timeline holds one clip object per cut, each pointing into the shared
+  multi-cam nest plus "which angle is active here." Flatten walks that
+  structure and replaces it with direct references to each angle's actual
+  source media at the corresponding trimmed range — which is exactly why a
+  flattened segment can be graded or leveled independently with ordinary
+  per-clip tools afterward: it's no longer routed through the shared nested
+  sequence at all.
+
 ## Exercise
 
 Record (or use existing) footage of the same short moment from two angles —

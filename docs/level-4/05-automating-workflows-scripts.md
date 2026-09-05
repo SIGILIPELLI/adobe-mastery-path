@@ -111,6 +111,57 @@ of by hand every time.
 | Run a custom script | File > Scripts (after installing to the app's Scripts folder) |
 | Generate many personalized documents | InDesign > Window > Utilities > Data Merge |
 
+## How It Actually Works
+
+- **A droplet is a recorded Action plus a tiny bundled launcher stub,
+  pre-configured with the source/destination settings you'd otherwise fill
+  into a Batch dialog by hand.** Dragging a file onto it invokes that
+  launcher, which starts (or wakes) Photoshop, feeds the dropped file
+  through the exact same command-replay mechanism as a normal Action
+  (Level 2), and applies the pre-set Batch-equivalent settings automatically
+  — it is the identical underlying serialized-command-list mechanism from
+  Level 2's Actions module, just packaged so the person using it never
+  opens Photoshop's UI or the Batch dialog directly.
+- **Publish Services track state by comparing each photo's current
+  Develop-parameter fingerprint against the fingerprint it had at its last
+  successful publish, flagging a mismatch as "Modified Photos to
+  Republish."** This is mechanically different from a plain Export Preset,
+  which has no memory of what was previously exported — Publish Services
+  maintains a persistent record, per photo, of "here is the state this was
+  in when last sent," and re-exports only photos whose current state
+  diverges from that record, which is the real reason it can incrementally
+  update a delivery folder instead of blindly re-exporting everything on
+  every run.
+- **A Watch Folder in Media Encoder works via filesystem polling/events: it
+  monitors a directory for newly-created files and, on detecting one,
+  automatically enqueues an encode job using the assigned preset** — no
+  human has to open Media Encoder and manually add the file; the folder
+  itself is the trigger. This is the same "automate the repeated step"
+  principle as an Action, just triggered by a filesystem event instead of
+  a manual drag-and-drop or Batch invocation.
+- **Scripting (ExtendScript/UXP) operates on the application's actual
+  object model — layers, paragraphs, compositions — as programmatically
+  addressable objects with properties and methods, which is a
+  fundamentally more expressive automation surface than an Action's fixed
+  linear command replay.** An Action can only replay the exact steps it
+  recorded, with no branching logic; a script can iterate ("for every
+  layer whose name matches this pattern..."), make decisions ("if this
+  photo's aspect ratio is portrait, use template B instead of template
+  A"), or pull external data — which is precisely the class of task
+  (data-driven generation, conditional per-file logic) that Actions/Batch
+  structurally cannot express, because they have no conditional or looping
+  constructs of their own.
+- **Data Merge works by treating each row of the CSV as a set of named
+  field substitutions applied against one InDesign template document, and
+  running that substitution once per row to generate one output document
+  per row.** The template's placeholder fields (inserted via the Data
+  Merge panel) are markers analogous to the "Current Page Number" marker
+  from Level 3's InDesign module — resolved not to a page number but to
+  whatever value that row's corresponding CSV column holds — which is why
+  200 rows of a CSV against one template produces 200 distinct documents
+  with identical layout structure but row-specific content, without
+  touching the template file 200 times by hand.
+
 ## Exercise
 
 Set up one automation from this module end to end: either a Lightroom

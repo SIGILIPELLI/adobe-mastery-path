@@ -116,6 +116,53 @@ there is no single universal "best" setting.
 | Export Media dialog | ⌘/Ctrl+M |
 | Reasonable 1080p web bitrate | VBR 2-pass, 8-12 Mbps target |
 
+## How It Actually Works
+
+- **A Cross Dissolve needs overlapping frames because it's an alpha
+  crossfade between two decoded frame buffers, not a re-cut of the edit
+  points.** For every frame of the transition's duration, Premiere decodes
+  the outgoing clip's frame *and* the incoming clip's frame at that same
+  moment, then blends them with a linearly-changing opacity ramp (0% to
+  100% incoming). Both source clips have to actually have frames available
+  past the visible cut point for that math to run — that's precisely what
+  the "needs trim handles" warning is reporting: there is no frame data left
+  to decode beyond the hard cut, so there is nothing to blend into.
+- **White balance correction is a per-channel gain calculation, not a
+  filter or preset.** Clicking a spot with the WB Selector reads that
+  pixel's RGB values and works out what gain multipliers would need to be
+  applied to red, green, and blue to make that sample neutral gray (equal
+  R=G=B); Lumetri then applies that same per-channel multiplier to every
+  pixel in the frame. This is why it's sensitive to *what* you click — a
+  slightly tinted "white" object gives a slightly wrong correction, since
+  the whole calculation assumes the sampled point should have been neutral.
+- **Loudness (LUFS) and peak level (dBFS) measure two different things,
+  which is why Auto-Match and the Audio Meters can disagree.** Peak meters
+  report the single loudest instantaneous sample; LUFS integrates perceived
+  loudness over time using a psychoacoustic weighting curve that
+  approximates how human hearing responds to different frequencies. Two
+  clips can have identical peak levels but sound very differently loud if
+  one has more sustained mid-frequency energy — Auto-Match is normalizing
+  toward a target LUFS value, not toward a target peak, which is why
+  watching only the Audio Meters' peak display doesn't fully verify what
+  Auto-Match just did.
+- **2-pass VBR encoding is literally two full passes over the footage.**
+  Pass one analyzes the entire sequence's frame-by-frame complexity (motion,
+  detail, scene changes) without writing final output; pass two then
+  allocates the target bitrate non-uniformly, spending more bits on
+  complex/high-motion sections and fewer on static or simple ones, guided by
+  what pass one measured. 1-pass VBR estimates bit allocation as it goes,
+  frame by frame, with no foreknowledge of what's coming — faster because
+  it only decodes/encodes once, but less efficient at distributing a fixed
+  total bitrate across a sequence with uneven complexity.
+- **A platform re-compressing your upload is real transcoding, not a
+  display setting.** When a delivered file doesn't match a platform's
+  expected specs (resolution, frame rate, bitrate, codec profile), the
+  platform's own ingest pipeline decodes your file and re-encodes it to its
+  internal target — a second lossy compression pass stacked on top of
+  yours. Generation loss compounds with each re-encode, which is the actual
+  mechanical reason matching a platform's documented specs exactly produces
+  a visibly cleaner result than uploading something "close enough."
+
 ## Exercise
 
 Take the rough cut from Module 4's exercise (or build a new short sequence

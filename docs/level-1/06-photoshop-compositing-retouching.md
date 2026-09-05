@@ -119,6 +119,51 @@ matters.
 | Cycle to Healing Brush | Shift+J |
 | Flatten image (final export copy only) | Image > Flatten Image |
 
+## How It Actually Works
+
+- **A layer mask is a grayscale channel, not a special hide/show flag.**
+  Internally it's an 8-bit grayscale image the exact dimensions of its
+  layer, stored as a per-pixel alpha multiplier: white pixels (255) pass the
+  layer's own pixel at full opacity, black (0) multiplies it to fully
+  transparent, and any gray value in between scales it proportionally. This
+  is why gray gives partial transparency rather than a binary state, and why
+  masks can be blurred, have levels/curves applied to them, or even copied
+  between layers like any other grayscale image.
+- **Adjustment layers store parameters, and get re-evaluated live during
+  compositing, not baked into pixels.** A Curves adjustment layer holds a
+  lookup table mapping input tone values to output tone values; when
+  Photoshop composites the stack, it evaluates that lookup against whatever
+  pixel data currently sits beneath it in the stack, every time it needs to
+  render. That's the mechanism behind reopening it later and getting the
+  exact same editable curve back, and also why moving an adjustment layer to
+  a different position in the stack changes its output — it's now being
+  evaluated against different underlying pixels.
+- **Clipping masks work by testing layer *indices*, not visual bounds.**
+  When you clip a layer to the one below it, Photoshop flags that layer as
+  "clipped to" the base layer directly beneath it in the stack order; during
+  compositing, the clipped layer's own alpha is multiplied by the base
+  layer's alpha before drawing — so if the base layer's shape changes (a
+  layer mask edit, a transform), the clipped adjustment or content
+  automatically follows without needing to be re-masked by hand.
+- **Content-Aware healing tools do texture synthesis, not simple copy-
+  paste.** The Spot Healing Brush's Content-Aware option analyzes a ring of
+  source pixels around your brush stroke, looks for patches elsewhere in the
+  image (or synthesizes new texture) that statistically match the
+  surrounding structure and color, and blends the seams using a Poisson-
+  blending-style gradient match so the lighting transition is smooth — this
+  is why it can "invent" plausible texture with no explicit source point,
+  unlike the Clone Stamp, which does a literal 1:1 pixel copy from wherever
+  you Option/Alt-clicked, with no automatic blending of tone or lighting.
+- **A `.psd`'s layers, masks, and adjustment parameters are all preserved
+  as distinct data structures inside the file** — which is exactly what
+  "flattening" destroys: flattening composites every visible layer down
+  through its masks and adjustments into one single pixel grid, discarding
+  the separate layer/mask/adjustment records permanently. That's the whole
+  reason the workflow above insists on keeping your working `.psd`
+  unflattened and only flattening a copy at export — there is no operation
+  that reconstructs the original layers, masks, or adjustment values from a
+  flattened result.
+
 ## Exercise
 
 Open any photo (a selfie, a product photo, or a downloaded stock image).

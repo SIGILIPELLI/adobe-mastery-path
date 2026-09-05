@@ -105,6 +105,53 @@ masks, extended across time.
 | Group layers into one unit | Right-click > Pre-compose... |
 | Render with transparency | Output Module > Format/Codec supporting alpha, Channels: RGB + Alpha |
 
+## How It Actually Works
+
+- **Alpha is a fourth numeric channel per pixel, stored and carried through
+  the pipeline exactly like R, G, and B.** Every rendered frame in After
+  Effects is RGBA internally: red, green, blue, plus a 0-1 (or 0-255)
+  transparency value per pixel. A layer with no alpha information (a
+  flattened JPEG, say) is simply treated as fully opaque everywhere;
+  compositing two layers means, at every pixel, blending their RGB using
+  the top layer's alpha as the mix weight. This is the entire mechanism
+  behind "rendering with alpha" mattering — a codec/container that discards
+  the alpha channel (most standard H.264 MP4 exports) throws away exactly
+  that fourth number, leaving no transparency data for a later app to
+  composite against.
+- **A Luma Matte reads the matte layer's *brightness* values as a per-pixel
+  alpha, while an Alpha Matte reads its actual alpha channel directly** —
+  two different source channels feeding the identical masking math. A
+  white area of a Luma Matte source (max brightness) produces full opacity
+  in the masked layer, black produces full transparency, and any gray value
+  produces partial opacity — the identical grayscale-as-opacity-multiplier
+  logic from Photoshop's layer masks, just computed from luminance instead
+  of a dedicated mask channel when using Luma Matte.
+- **A Mask Path is Bézier path data — the same anchor-point-and-handle
+  representation from every other path in this course — stored as an
+  animatable property on the layer**, which is exactly why it can be
+  keyframed: each keyframe stores a full path shape at that time, and After
+  Effects interpolates the path's point positions between keyframes the
+  same way it interpolates any other spatial property, producing a smoothly
+  morphing mask shape rather than a static cutout.
+- **Effect order matters because each effect in the Effect Controls stack
+  operates on the pixel buffer the previous effect already produced, not on
+  the original source simultaneously.** A Gaussian Blur applied before a
+  Curves adjustment blurs the raw footage, then Curves remaps the
+  already-blurred pixel values; reversed, Curves remaps the sharp original
+  first, and Blur then softens the already-graded result — different pixel
+  math at each stage produces genuinely different final values, not just a
+  reordering of visually similar operations.
+- **Precomposing moves the selected layers' actual data into a new
+  composition and replaces them, in the parent, with a single layer that
+  references that new comp** — mechanically identical to nesting a
+  composition as covered in Module 1's After Effects lesson. Any effect,
+  blend mode, or mask applied at the parent level to that one layer is
+  evaluated *after* the entire precomp has already been fully rendered and
+  flattened into one frame, which is the structural reason it can treat an
+  arbitrarily complex group of layers as a single compositing unit: by the
+  time the parent-level operation runs, there's only one flattened image
+  left to operate on.
+
 ## Exercise
 
 Composite the title card over the background footage: grade the footage

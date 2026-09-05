@@ -115,6 +115,57 @@ building a full primary + secondary grade in Lumetri Color.
 | Apply an identical grade to other clips | Copy clip > Edit > Paste Attributes (Video Effects) |
 | Export a shareable grade | Lumetri panel menu > Export .cube... |
 
+## How It Actually Works
+
+- **A Waveform is a direct, objective plot of luma values sampled across
+  every horizontal pixel column, which is exactly why it's trustworthy
+  when a monitor isn't.** For each horizontal position in the frame, the
+  scope plots every pixel in that column's vertical line at a height
+  corresponding to its brightness value — a monitor's own calibration,
+  brightness, or ambient-light viewing conditions can make identical pixel
+  data look brighter or dimmer to your eyes, but the Waveform is reading
+  the actual numeric luma values directly, unaffected by any display's
+  rendering of them. That's the whole reason professional grading trusts
+  scopes over "how it looks on my screen right now."
+- **RGB Parade plots the identical waveform computation three times, once
+  per color channel, which is precisely why a level mismatch between the
+  three plots reveals a color cast mathematically rather than by
+  perception.** A true neutral gray or white object has equal R, G, and B
+  values; if the same tonal region's red trace sits measurably higher than
+  its blue trace, that's a direct numeric imbalance between channels at
+  that brightness level — a tint — read straight off the data, the same
+  underlying insight as checking a Curves per-channel graph in Photoshop
+  but visualized as a live per-pixel plot instead of an editable function.
+- **The Vectorscope plots each pixel's hue as an angle and its saturation
+  as a radius from center, derived from converting RGB to a hue/saturation
+  color model per pixel and accumulating those points into a density
+  plot.** The skin-tone line is a fixed angle on that wheel corresponding
+  to the hue range human skin reliably falls near across a wide range of
+  actual skin tones and lighting — checking that skin-toned pixels cluster
+  along that line is checking a real mathematical property of the color
+  data, not an aesthetic judgment call.
+- **HSL Secondary isolates a color range by converting every pixel to
+  Hue/Saturation/Luminance and testing whether each falls inside the
+  ranges you've set, producing a per-pixel mask exactly like a Photoshop
+  luminance mask or a Lightroom color-range mask** — the Color/Gray matte
+  preview is literally displaying that computed mask (white = fully
+  selected, black = fully excluded, gray = partial) so you can verify the
+  selection boundary before applying a correction scoped to it, the
+  identical mask-as-opacity-map principle used throughout this course.
+- **Color Match and Paste Attributes solve the matching problem through
+  two fundamentally different mechanisms, which is exactly why one
+  requires manual scope-checking for different lighting and the other
+  doesn't.** Paste Attributes copies the literal stored parameter values
+  from one clip's Lumetri effect onto another — identical numbers applied
+  to different source pixels, which only produces a matching *look* if the
+  two clips' underlying exposure and white balance were already similar.
+  Color Match instead runs an algorithm that analyzes both clips' actual
+  pixel/histogram data and computes new, clip-specific correction values
+  intended to make the second clip's tonal and color distribution
+  statistically resemble the reference — a real per-shot calculation, not
+  a copy, which is why it can approximate a match even across differently
+  lit footage where a literal parameter copy would fail.
+
 ## Exercise
 
 Grade a short sequence of at least three clips (ideally from at least two

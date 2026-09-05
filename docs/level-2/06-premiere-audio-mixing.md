@@ -115,6 +115,54 @@ combined level.
 | Edit audio in Adobe Audition | Right-click clip > Edit Clip in Adobe Audition |
 | Check final levels | Window > Audio Meters |
 
+## How It Actually Works
+
+- **The signal flow is a literal summing chain: clip → track → submix →
+  Master, each stage multiplying the signal by a gain value.** Every
+  track's fader is a multiplier applied to whatever audio arrives at that
+  track (already summed from every clip on it); routing a track's output to
+  a submix instead of Master means that track's signal is summed together
+  with every other track pointed at the same submix *before* the submix's
+  own fader multiplies the combined result again on its way to Master. This
+  is exactly why moving one submix fader changes every routed track by the
+  same proportion at once — they've already been mixed into one shared
+  signal by the time that fader touches it, whereas the individual tracks
+  underneath, being still separately routed, remain independently
+  adjustable at their own strips.
+- **Automation modes determine whether fader movement is read as data-in or
+  data-out of a keyframe timeline.** Write and Touch modes sample the
+  fader's position continuously (or only while touched) and record each
+  sample as a volume keyframe at that point in time — the same underlying
+  keyframe data model from After Effects/Essential Graphics animation. Read
+  mode instead only *plays back* whatever keyframes already exist, applying
+  their stored values without generating new ones — which is why switching
+  a strip to Read after recording an automation pass gives you a locked,
+  repeatable result on every subsequent playback.
+- **Duck Against Dialogue works by automatically generating volume
+  keyframes at every dialogue clip's boundaries, based on tag metadata, not
+  by "listening" to the mix live.** Essential Sound scans the sequence for
+  clips tagged Dialogue, and for each one, computes a ramp-down keyframe
+  shortly before that clip starts and a ramp-up keyframe shortly after it
+  ends on the tagged Music clip — Generate Keyframes is the step that
+  actually writes those computed values as literal keyframes onto the music
+  clip's volume property, after which it behaves exactly like any other
+  manually-set volume automation and can be nudged by hand.
+- **A fade handle is a shorthand UI for the same volume-keyframe mechanism,
+  constrained to a clip's own local timeline.** Dragging a corner fade
+  handle inward writes two keyframes — one at 0% volume at the clip's very
+  edge, one at 100% volume at the point you dragged to — and Premiere
+  interpolates linearly between them, identical in kind to any other
+  keyframe-driven property change, just scoped to that one clip rather than
+  the whole track.
+- **dB is a logarithmic ratio, which is why "-15 to -20 dB under dialogue"
+  is a much bigger perceived drop than the numbers suggest.** Decibels
+  express a ratio of amplitudes on a logarithmic scale (roughly, every -6 dB
+  halves the signal's amplitude); a -18 dB duck represents the music's
+  amplitude dropping to roughly one-eighth of its unducked level, not a
+  linear "18% quieter" — which is the actual reason a duck that looks like
+  a small fader move produces a dramatic, clearly audible drop under
+  dialogue.
+
 ## Exercise
 
 Build a short sequence with dialogue on one track, ambience on a second,

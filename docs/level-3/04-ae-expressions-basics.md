@@ -102,6 +102,53 @@ expressions.
 | Adjustable helper value | Effect > Expression Controls > Slider/Angle/Checkbox/Color Control |
 | Remove an expression | Alt/Option-click the stopwatch again |
 
+## How It Actually Works
+
+- **An expression is JavaScript re-evaluated fresh on every single frame,
+  not a one-time calculation cached at the moment you typed it.** After
+  Effects runs the property's expression text through an embedded
+  JavaScript engine for every frame it renders, with variables like `time`
+  and `value` populated for that specific frame before evaluation — which
+  is exactly why `rotation + time * 30` produces continuous spinning with
+  zero keyframes: `time` is simply a different number each frame, so the
+  expression's output is different each frame, purely as a side effect of
+  being re-run against a changing input.
+- **`value` inside an expression reads whatever the property's own
+  keyframes (or default) currently resolve to at that frame, before the
+  expression modifies it further** — this is why keyframes and an
+  expression can coexist: the keyframe system computes its normal
+  interpolated result first, hands that number to the expression as
+  `value`, and the expression's returned result (which may add `wiggle()`
+  jitter on top, for instance) is what actually gets rendered. Nothing about
+  adding an expression deletes or bypasses the keyframes underneath it.
+- **`wiggle()` is a seeded pseudo-random function evaluated per-frame at the
+  specified frequency, not literal noise sampled from nothing.** Internally
+  it generates smoothly-interpolated random values (technically closer to
+  Perlin-style noise than uniform random) at the rate given by `freq`,
+  scaled by `amp`, and adds that to the property's base value — the
+  "seed" is deterministic per layer/property by default, which is why the
+  same wiggle expression reapplied produces the same-looking jitter pattern
+  rather than a different random result every time you scrub.
+- **`loopOut("cycle")` works by re-reading the existing keyframe *data*
+  (their values and spacing) past the last keyframe's time, rather than
+  literally copying keyframes into the timeline.** It computes elapsed time
+  since the sequence started, takes that modulo the total duration spanned
+  by your keyframes, and looks up what value the *original* keyframed
+  animation would have had at that equivalent point in its first cycle —
+  which is exactly why editing an original keyframe automatically updates
+  every subsequent loop without touching the expression at all: the loop
+  has no independent copy of the animation, only a formula for reading the
+  same source data repeatedly.
+- **Expression Controls are ordinary effects with exactly one exposed
+  parameter and no rendering behavior of their own**, existing purely to
+  give pick-whip references something stable to point at. Pick-whipping
+  from another property to a Slider Control generates a direct property
+  path (e.g. `thisComp.layer("Name").effect("Wiggle Amount")("Slider")`) —
+  changing that slider's value doesn't "broadcast" to every expression
+  referencing it; each dependent expression simply re-reads that one
+  effect's current parameter value every time it's re-evaluated on a new
+  frame, same as reading any other property.
+
 ## Exercise
 
 Add `loopOut("cycle")` to a rotating or moving decorative element so it

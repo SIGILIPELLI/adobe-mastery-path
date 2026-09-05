@@ -107,6 +107,49 @@ from the Library versus recreated by hand in that app, and fix the source.
 | Poster | Photoshop | Logo Graphic (Smart Object), colors, character style |
 | Promo video | Premiere Pro | Logo Graphic (title card), colors, character style (where supported) |
 
+## How It Actually Works
+
+- **Every deliverable resolves the same asset IDs, not copies of the same
+  values.** The logo, poster, and promo video don't happen to use matching
+  colors because you typed the same hex code three times — each app reads
+  the color swatch and Graphic by the Library's internal asset ID and
+  resolves it to whatever data is currently attached to that ID. This is
+  the structural reason the "make one deliberate change" step in the
+  exercise is worth doing: it proves the three files are wired to a shared
+  source of truth rather than three independent snapshots that merely
+  started out looking the same.
+- **Color drift between the poster and the video is usually a color-space
+  mismatch, not a broken Library link.** Photoshop's document, if left in
+  RGB, and Premiere's Lumetri pipeline, which operates in its own working
+  color space (typically Rec. 709 for SDR video), can render the *same*
+  underlying RGB values as visibly different colors on screen if one
+  environment applies a different gamma/transfer curve than the other. This
+  is why "the colors match on paper" (identical hex values in both
+  Libraries panels) can still look slightly different side by side —
+  it's two different rendering pipelines interpreting the same numbers, not
+  a sync failure.
+- **A logo placed as a Smart Object in Photoshop versus a linked graphic in
+  Premiere are resolved through two different rendering paths from the same
+  source data.** Photoshop's Smart Object resolves the Illustrator document
+  through its own vector-rasterization engine at whatever size/resolution
+  the Smart Object bounding box requires. Premiere's Essential Graphics
+  engine resolves the same underlying asset through its Motion Graphics
+  template renderer, which composites it directly into the video frame's
+  color space and frame rate. Both start from the identical Library asset,
+  but each app's own compositing engine is what actually produces the pixels
+  you see — which is why a shape can look subtly different in weight or
+  antialiasing between the poster and the video overlay even when nothing
+  about the source Graphic changed.
+- **Frame grabs and exported stills are a one-time rasterization, frozen at
+  export time.** Once you flatten the poster to a PNG or export a frame from
+  the promo video, that specific file is permanently disconnected from the
+  Library — it holds no asset ID, no version reference, nothing that would
+  let it "catch" a later color change automatically. Only the *source*
+  Photoshop/Premiere project files stay live-linked; every exported
+  deliverable is a snapshot that has to be manually re-exported after a
+  Library update if it needs to stay current, which is exactly the
+  distinction the review step in Step 5 is testing you on.
+
 ## Exercise
 
 Complete all three deliverables — logo, poster, promo video — pulling

@@ -96,6 +96,56 @@ whether it should be a live link or a one-time flattened export.
 | End-of-pipeline flatten | Rendered MP4, flattened PDF/JPEG |
 | Portable handoff snapshot | Package (InDesign) / Collect Files (Premiere) |
 
+## How It Actually Works
+
+- **Every "live link" in this pipeline is the same underlying mechanism
+  applied at different scopes: a stored reference (path or asset ID) plus a
+  version marker, resolved fresh whenever the host file needs to render.**
+  A Smart Object stores a source path/asset-ID; InDesign's Links panel
+  stores a file path plus a last-known-modified timestamp; a Creative Cloud
+  Library asset stores a cloud asset ID and version number; Dynamic Link
+  (Module 2) stores a reference to an AE project and composition name. In
+  every case, "updating a link" means the same operation: re-resolving that
+  reference against the current state of the source and re-rendering from
+  it — which is why understanding one of these mechanisms deeply (as
+  Level 1's Libraries module did) transfers directly to reasoning about all
+  the others.
+- **A flattened export is irreversible precisely because it discards the
+  reference, not because the file format itself is somehow "final."** An
+  MP4 or flattened JPEG contains only rendered pixel/sample data with no
+  stored pointer back to source layers, Develop parameters, or a Library
+  asset ID — there is no data left in the file for any app to resolve back
+  to an editable original. This is a strictly one-way data loss, which is
+  exactly why the pipeline convention is to keep everything linked through
+  production and flatten only once, at the very end, when no further
+  revision is expected.
+- **File > Package / Collect Files works by walking every stored link
+  reference in the project and copying the referenced file into a new,
+  self-contained folder, then rewriting the project's link paths to point
+  at the copies.** This is a literal graph traversal of the project's
+  reference structure (every Place, every linked footage item) — which is
+  why a project with a missing or offline link produces a warning during
+  packaging: the tool found a reference it could not resolve to an actual
+  file to copy.
+- **Consistent naming/versioning matters mechanically, not just as tidiness,
+  because most linking mechanisms resolve by file path plus modification
+  signal, not by content-aware identity.** Overwriting `logo_final.ai` in
+  place changes the file at a path every linking app is already watching,
+  which is usually the desired live-update behavior — but if two
+  collaborators both save different content to the identical path
+  concurrently, whichever save happens last silently becomes what every
+  linked app resolves to next, with no merge and no built-in warning beyond
+  what each app's own link-status indicator shows.
+- **Color management (Module 3) is what makes "linked" and "matches
+  visually" two different guarantees, which is the deeper reason a
+  pipeline needs it explicitly.** A link mechanism guarantees the *same
+  underlying data* reaches every app; it says nothing about whether that
+  data renders identically once decoded through each app's own color
+  space and rendering intent — an RGB photo linked identically into a video
+  edit and a CMYK print layout is guaranteed to be the same source pixels,
+  not guaranteed to look the same once each pipeline stage's color
+  conversion is applied.
+
 ## Exercise
 
 Write out the full asset pipeline for a hypothetical campaign of your own

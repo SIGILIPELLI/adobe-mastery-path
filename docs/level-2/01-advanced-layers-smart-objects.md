@@ -153,6 +153,57 @@ it.
 | Free Transform | ⌘/Ctrl+T |
 | Step through blend modes | Shift+Plus / Shift+Minus |
 
+## How It Actually Works
+
+- **A Smart Object defers rasterization to render time instead of baking it
+  in at edit time.** Internally it stores the original embedded (or linked)
+  data plus a stack of transform/filter instructions — a scale factor, a
+  rotation matrix, a list of Smart Filter parameters — rather than a single
+  resampled pixel grid. Every time Photoshop needs to display or export the
+  layer, it re-renders from the *original* source data through that
+  instruction stack in one pass. That's the actual mechanism behind
+  non-destructive scaling: repeatedly changing the scale value just edits a
+  number in the instruction stack, so Photoshop always resamples once, from
+  full-resolution source, at whatever the final scale ends up being — never
+  from an already-resampled intermediate result the way a plain raster
+  layer would.
+- **A Smart Filter is a per-filter entry in that same instruction stack,
+  each with its own mask channel.** Because the filter's parameters are
+  stored rather than applied to pixels, reopening a Smart Filter re-invokes
+  the filter algorithm with the saved settings against the *current*
+  resolved content of the Smart Object — which is why editing the source
+  file and re-saving it correctly re-runs every downstream Smart Filter
+  automatically, rather than leaving stale filtered pixels behind.
+- **A layer group's "Pass Through" blend mode is a flag that skips an
+  intermediate compositing step, not a default with no effect.** With Pass
+  Through, Photoshop composites each layer inside the group directly against
+  whatever is beneath the *group* in the main stack, exactly as if no group
+  boundary existed. Any other blend mode forces Photoshop to first
+  fully composite the group's contents into an isolated buffer, then blend
+  *that flattened buffer* against the layers below using the chosen mode —
+  this two-stage versus one-stage compositing is the literal reason a
+  group's blend mode is the one property that can change how identical
+  contents render.
+- **Blend modes are per-channel arithmetic functions evaluated on
+  normalized (0-1) pixel values, not visual presets.** Multiply computes
+  `base × blend` for each of R, G, and B independently — since any value
+  multiplied by 1 (white) stays unchanged and anything multiplied by a
+  fraction darkens, white in the blend layer becomes invisible and darker
+  values progressively darken the base. Screen is the inverted-space
+  version: `1 - (1-base)×(1-blend)`, which is mathematically why it behaves
+  as Multiply's mirror image and treats black as the "invisible" value.
+  Overlay is a conditional blend that branches per-pixel on whether the base
+  value is above or below 0.5, applying Multiply-like or Screen-like
+  behavior accordingly — which is exactly why it adds contrast rather than
+  uniformly darkening or lightening.
+- **The Screen-mode light-leak trick works because near-black source pixels
+  evaluate to almost zero contribution in that formula** — not because
+  Photoshop is doing any special-case "remove black background" operation.
+  Any texture authored with a true black background will disappear under
+  Screen for the same underlying arithmetic reason, which is also why a
+  texture with a dark-gray-not-black background leaves a faint visible haze
+  instead of fully vanishing.
+
 ## Exercise
 
 Build a two-layer composite: a base photo and a texture or graphic overlay.

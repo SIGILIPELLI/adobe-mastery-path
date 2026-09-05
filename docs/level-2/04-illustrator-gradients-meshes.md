@@ -126,6 +126,58 @@ Layers/adjustment layers, applied to a single vector object's look.
 | Apply a live effect | Effect menu (with a row selected in Appearance) |
 | Copy a whole appearance to another object | Drag the Appearance thumbnail onto it |
 
+## How It Actually Works
+
+- **A gradient is interpolated color along a 1D parametric axis mapped onto
+  the object.** A linear gradient defines a straight axis (set by the angle
+  and length you drag with the Gradient tool) and computes each stop's
+  position as a percentage along it; for any point on the object, Illustrator
+  projects that point onto the axis, finds which two stops bracket it, and
+  linearly interpolates their colors weighted by distance. Radial does the
+  same thing but with distance-from-center replacing position-along-axis as
+  the parameter. This is exactly why dragging the Gradient tool a shorter
+  distance compresses the whole transition into a smaller physical area —
+  you're rescaling the axis the percentages are measured against, not
+  editing the stops themselves.
+- **Gradient Mesh generalizes that same interpolation from one axis to a
+  2D grid of independently-colored points.** Each mesh intersection is a
+  genuine anchor point (with the same Bézier handle machinery from ordinary
+  paths) that additionally carries a color value; Illustrator interpolates
+  color continuously across each mesh patch — the quadrilateral bounded by
+  four adjacent mesh points — using the same kind of bilinear blending a
+  gradient does along a line, just extended across two dimensions at once.
+  That's what makes a highlight follow a curved mesh line rather than a
+  straight axis: the color's spatial reference is the curved patch geometry
+  itself, not a fixed linear ramp.
+- **The Appearance panel's fill/stroke/effect stack is evaluated top-to-
+  bottom per object, independently of the object's actual path data.**
+  The underlying path (its anchor points and curves) is stored once; every
+  row in the Appearance panel is a separate rendering instruction applied
+  against that same path data, composited in stack order — which is
+  mechanically identical to how a Photoshop layer's pixel data can carry
+  multiple non-destructive adjustments. This is why duplicating an
+  Appearance stack and dragging it onto a different object reproduces the
+  exact same layered look on entirely different path geometry: none of the
+  fill/stroke/effect definitions reference the original object's specific
+  points, only its shape at render time.
+- **A live effect (like Drop Shadow or Zig Zag) stores its parameters and
+  re-runs its algorithm at render/export time, rather than rewriting the
+  path.** Zig Zag, for instance, keeps the original smooth path untouched
+  in the object's actual geometry and instead tells the renderer "redraw
+  this outline with periodic in/out displacement of a given size and
+  segment count" every time it needs to display or export the object —
+  identical in spirit to a Photoshop Smart Filter. That's why toggling an
+  effect's visibility or deleting it instantly restores the exact original
+  path with zero degradation, no matter how many effects were stacked
+  before it.
+- **Converting to a mesh is a one-way, destructive geometry rewrite,
+  unlike a live effect.** `Create Gradient Mesh` replaces the object's fill
+  definition and, crucially, its path data itself with new mesh-point
+  geometry — the original single flat path and its gradient definition are
+  discarded, not hidden underneath. That's the real mechanism behind the
+  warning that meshes "replace" a fill rather than layer on top of it, and
+  why there's no direct "convert back to gradient" command afterward.
+
 ## Exercise
 
 Draw a simple rounded shape and apply a Radial gradient with at least three

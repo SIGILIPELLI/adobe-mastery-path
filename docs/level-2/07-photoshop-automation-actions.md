@@ -123,6 +123,48 @@ Processor** is faster to set up than recording an Action first.
 | Quick resize + format conversion across a folder | File > Scripts > Image Processor |
 | Make a droplet (drag-and-drop mini app for one action) | File > Automate > Create Droplet |
 
+## How It Actually Works
+
+- **An Action is a recorded, serialized list of menu-command invocations
+  with their exact dialog parameters, not a screen-recording of your
+  clicks.** Every step Photoshop captures while recording stores the
+  specific command (e.g. `Image Size`) plus the parameter values you
+  confirmed in its dialog (target width, resample method, etc.) as
+  structured data, not pixel coordinates or timing. That's precisely why
+  Actions replay reliably at any window size or document dimension — each
+  step re-invokes the same underlying command with the same stored
+  parameters against whatever file is currently open, rather than "clicking
+  in the same screen location" the way a naive macro recorder would.
+- **Relative values (like "resize to 2000px wide") are stored as absolute
+  numbers unless you deliberately record a percentage-based step**, which
+  is why an Action recorded on a 4000px-wide sample photo and then run on a
+  1200px-wide source file will *upscale* that smaller file to 2000px rather
+  than skip it — the Action has no concept of "only if larger than," it
+  just replays the literal numeric command it captured.
+- **Batch feeds files through the Action by substituting the currently-open
+  document for every step's implicit target, one file at a time in a
+  loop.** Photoshop opens file 1, runs the entire recorded step sequence
+  against it, saves/exports per the Destination settings, closes it, then
+  repeats for file 2 — this per-file, single-threaded loop is why Batch
+  jobs scale linearly with file count and why a slow step (a large filter,
+  a big resize) multiplies directly across the whole folder's runtime with
+  no shortcut.
+- **Insert Stop pauses the *loop*, not just the current step — Batch has to
+  actually block and wait for a human response before it can proceed to the
+  next command in the sequence for that file.** This is a real, synchronous
+  halt in the automation pipeline, which is exactly why an Action full of
+  Stops defeats the point of Batch processing dozens of files unattended —
+  each Stop reintroduces a manual checkpoint the whole batch run has to sit
+  through, file by file.
+- **The Image Processor is a bundled script wrapping the same underlying
+  resize/export/Action-invocation APIs Batch itself uses, exposed through a
+  simpler single-purpose dialog** — which is why it can optionally "Run
+  Action" as one more step in its own pipeline: under the hood it is
+  scripting the identical resize-then-save-then-optionally-run-a-recorded-
+  action sequence Batch performs, just pre-built for the common
+  resize-and-convert-format case so you don't have to record that specific
+  Action yourself.
+
 ## Exercise
 
 Record an Action that resizes a photo to a fixed width, places a watermark

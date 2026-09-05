@@ -110,6 +110,51 @@ somewhere to stand.
 | Parent a layer | Parent & Link column, pick-whip |
 | New Shape / Text layer | Layer > New > Shape Layer / Text |
 
+## How It Actually Works
+
+- **A project references footage by file path, not by embedding it**, which
+  is the mechanical reason moving or renaming a source file produces a
+  "missing footage" error rather than silently continuing to work — the
+  `.aep` project file stores a pointer (path + a checksum/metadata for
+  verification) to each imported asset, and every layer built from that
+  footage item resolves through the same pointer at render time. Keeping a
+  stable folder structure from the start isn't a style preference; it's
+  avoiding invalidating every one of those stored paths at once.
+  
+- **Transform properties are stored per-layer as independent numeric
+  channels (Position, Scale, Rotation, Opacity, Anchor Point), evaluated
+  fresh at every frame** — which is exactly why "revealing" a property with
+  P/S/R/T doesn't compute anything, it just displays a channel that already
+  exists on every layer by default (at rest values: 0% rotation, 100%
+  scale, full opacity). Keyframing one later is simply telling that same
+  channel to hold different values over time instead of one constant value.
+
+- **The Anchor Point is the origin every other transform is computed
+  relative to, not just a visual dot.** Position places the anchor point at
+  a location in the composition; Scale and Rotation both pivot around that
+  same point. Two identical-looking layers with the anchor point set at
+  their center versus at a corner will rotate completely differently under
+  the exact same Rotation keyframes — the visual shape doesn't change, but
+  the coordinate space the transform math operates in does.
+
+- **Text and shape layers stay resolution-independent because their
+  content is Bézier path and glyph-outline data evaluated at render
+  resolution, the same underlying math as Illustrator paths and OpenType
+  glyphs from earlier levels** — After Effects rasterizes them fresh at
+  whatever pixel dimensions the current composition and Scale value
+  require, rather than scaling a pre-rendered bitmap the way an imported
+  raster image layer must.
+
+- **Parenting works by making a child layer's transform properties relative
+  to its parent's *resolved* transform matrix instead of the composition's
+  absolute coordinate space.** Internally, After Effects computes the
+  parent's full transform for the current frame, then applies the child's
+  own Position/Scale/Rotation values on top of that as an offset — which is
+  why moving the parent moves the child (the child's absolute position is
+  recomputed through the parent's matrix every frame) while the child's own
+  keyframed animation still plays out normally in that now-shifted local
+  space, rather than being overwritten by the parent's motion.
+
 ## Exercise
 
 Build the animated title card above end to end: a full-frame background

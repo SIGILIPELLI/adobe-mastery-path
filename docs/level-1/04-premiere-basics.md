@@ -119,6 +119,53 @@ every editing session.
 | Play/pause | Spacebar |
 | Export Media dialog | ⌘/Ctrl+M |
 
+## How It Actually Works
+
+- **A sequence is a timeline of edit decisions, not rendered video.** Every
+  clip on a track is really a pointer to a source file plus an in/out range
+  and a position in time — this "edit decision list" model is why trimming,
+  moving, or deleting a clip is instant regardless of the source file's
+  length or resolution: Premiere is only rewriting timestamps and
+  references, not touching a single pixel of the underlying media, until
+  you export.
+- **Playback is real-time decoding plus compositing, which is why some
+  footage plays smoothly and other footage doesn't.** The Program Monitor
+  has to decode every visible track's source codec, apply any effects, and
+  composite the tracks together fast enough to hit the sequence's frame
+  rate — live, every time you move the playhead. Long-GOP formats (like
+  H.264 from most cameras) are cheap to store but expensive to decode
+  because each frame depends on nearby frames; that's why heavily-compressed
+  footage often stutters in the Program Monitor even though the same file
+  plays fine in a simple media player (which doesn't need to seek/scrub
+  arbitrarily or composite anything on top).
+- **Ripple Delete vs. plain Delete is a difference in what happens to every
+  clip after the cut point, not just the one you touched.** A plain Delete
+  only changes the range you selected, leaving a gap because nothing else on
+  the track is told to move. Ripple Delete additionally shifts every later
+  clip on that track (and, depending on settings, linked clips on other
+  tracks) leftward by exactly the duration removed — it's a global
+  time-shift operation on the sequence, not a local edit, which is also why
+  it can silently desync unlinked audio on a different track if you're not
+  careful.
+- **Insert vs. Overwrite differ in whether existing content is time-shifted
+  or destroyed.** Insert performs the same ripple-shift as Ripple Delete but
+  in reverse — it pushes everything at and after the playhead later in time
+  to make room. Overwrite does no shifting at all; it just replaces
+  whatever frames already occupy that exact time range on that track,
+  which is why Overwrite can silently delete footage outside the visible
+  timeline area if you're not watching the duration of what you're
+  dropping in.
+- **Export is where the edit decision list finally becomes pixels.** Media
+  Encoder (or Premiere's own export) walks the sequence frame by frame,
+  decodes every source clip needed for that frame, applies effects and
+  compositing in the order the tracks and effect stack specify, then
+  re-encodes the composited result into the target codec/container you
+  chose. This single-pass render is why export time scales with sequence
+  duration and effect complexity rather than with how many edits you made
+  to arrive at that timeline — a heavily-edited sequence assembled from
+  simple footage exports faster than a short sequence with heavy color or
+  motion effects on every frame.
+
 ## Exercise
 
 Import at least two video clips (or download short stock/sample clips if

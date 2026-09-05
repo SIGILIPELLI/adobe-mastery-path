@@ -123,6 +123,57 @@ underlying layer structure.
 | Browse/reuse saved templates | Essential Graphics > Browse tab |
 | Keyframe a property (Position/Scale/Opacity) | Effect Controls > stopwatch icon next to the property |
 
+## How It Actually Works
+
+- **A graphics layer is built on After Effects' underlying layer/property
+  model, exposed through Premiere's simpler panel.** Essential Graphics
+  clips are, under the hood, backed by the same Motion Graphics engine that
+  powers After Effects compositions — every text/shape layer carries a full
+  transform property set (Position, Scale, Rotation, Opacity) with keyframe
+  support identical in structure to what Module 5's After Effects lesson
+  described. That's precisely why Effect Controls' stopwatch-and-keyframe
+  workflow for a title is mechanically the same gesture as animating a text
+  layer in After Effects — it's the same interpolation engine underneath a
+  different panel.
+- **Responsive Design — Position works by storing an anchor rule relative
+  to the frame edges, re-evaluated whenever frame dimensions change, rather
+  than a fixed pixel coordinate.** Pinning to bottom-left doesn't record
+  "x=80, y=920" — it records an offset relationship to that edge (distance
+  from left, distance from bottom) that Premiere recalculates against the
+  *current* sequence's actual frame dimensions on every render. Change the
+  sequence to a different aspect ratio or export at a different resolution,
+  and the same rule re-solves to new absolute coordinates automatically —
+  which is the entire mechanism, not a coincidence of "graphics happening to
+  look fine."
+- **Responsive Design — Time works by defining the roll-in/roll-out as
+  *durations counted from each end of the clip*, not fixed timeline
+  positions.** The roll-in/out lengths you set are stored relative to the
+  clip's actual in/out points; when you trim the clip shorter or longer on
+  the timeline, Premiere recalculates where within the (now different)
+  clip duration those roll segments fall, re-triggering the fade/reveal
+  animation's start and end times to match the new edges — this is
+  structurally identical to how a fade handle works (Module 6), just scoped
+  to graphic properties instead of audio volume.
+- **A Master Text Style stores a named bundle of text formatting properties
+  in the project, referenced by any text layer that applies it** — the
+  same reference-vs-literal-value distinction as Illustrator's Paragraph
+  Styles (this level's Module 3). Applying a Master Text Style doesn't copy
+  values into the layer; it links the layer to that style definition, which
+  is why editing the master style later can cascade to every text layer
+  still linked to it, and why a layer with manual overrides on top shows the
+  same kind of "style + local override" split described there.
+- **A `.mogrt` file is a self-contained archive bundling the After
+  Effects/Premiere layer structure plus explicitly whitelisted "exposed
+  parameters," with everything else locked.** Exporting walks the graphic's
+  full layer/property tree and serializes it into a package, but only the
+  properties you flagged as editable in the Essential Graphics Edit tab are
+  written into the template's public parameter list — every other property
+  (layer structure, unexposed effects, precise keyframe timing) is preserved
+  internally but has no user-facing control surface once the `.mogrt` is
+  dropped into a different project, which is the actual mechanism that
+  keeps a shared template safe from being restructured by whoever reuses
+  it.
+
 ## Exercise
 
 Build a lower-third title with a background shape and a text layer in

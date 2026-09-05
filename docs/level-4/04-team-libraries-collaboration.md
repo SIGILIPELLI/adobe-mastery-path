@@ -107,6 +107,57 @@ This module covers setting one up and using it in a multi-person workflow.
 | Cloud Document version history | File > Version History |
 | Remove a collaborator | creativecloud.adobe.com > Library sharing settings |
 
+## How It Actually Works
+
+- **A Team Library is the identical per-asset sync mechanism from Level
+  1's personal Library, with a permission layer added at the account level
+  rather than any different underlying sync protocol.** Sharing a Library
+  grants other Adobe IDs read/write access to the same set of cloud-stored
+  asset records (each with its own asset ID and version, as covered in
+  Level 1); nothing about how an asset syncs, versions, or resolves as a
+  reference changes when multiple accounts can write to it — the only new
+  variable is that "the most recent save wins" now has more than one
+  possible writer.
+- **Last-write-wins conflict resolution is a direct consequence of assets
+  being versioned but not merged.** Each edit to an asset creates a new
+  version record; when two edits race, the sync backend simply advances the
+  asset's "current version" pointer to whichever write's timestamp is
+  later, and the earlier write's content becomes an orphaned prior version
+  with no automatic reconciliation of the two edits' differing changes —
+  structurally identical to a last-write-wins database, not a three-way
+  merge like source control. That's precisely why the module recommends a
+  social/procedural fix (agree who's editing what) rather than a technical
+  one — the sync layer has no merge capability to lean on.
+- **A placed Library asset in another collaborator's file doesn't refresh
+  itself the instant the source changes — it refreshes when that file's own
+  linked-asset resolution runs (on open, or on manual update), exactly the
+  "reference resolved on demand" pattern from this level's earlier
+  modules.** The Library's asset list (Colors, Styles panels) updates
+  quickly because that's lightweight metadata; a Graphic already placed as
+  a linked Smart Object keeps referencing whatever version it was placed
+  with until that specific placement's resolution step runs again — which
+  is exactly why the worked example describes the editor "reopening the
+  project" or manually refreshing, rather than seeing the logo change
+  live while the AE project sits open.
+- **Cloud Documents' version history works by the app saving discrete,
+  timestamped snapshots of the whole document to cloud storage on an
+  autosave cadence, each a complete restorable state — not a diff-based
+  history.** Restoring an earlier version replaces the current cloud
+  document's content with that snapshot's saved data wholesale; this is
+  a different mechanism from a Library asset's per-asset versioning (which
+  tracks one small object's history) — version history here operates at
+  the scope of the entire document file.
+- **Removing a collaborator's access revokes their account's permission to
+  read/write that Library's asset records going forward, but does nothing
+  to any copy of those assets already resolved into files on their local
+  machine.** Because a linked Smart Object or a synced Style is, once
+  placed, either a live reference or (if previously flattened/embedded) an
+  actual local copy, revoking Library access only prevents *future*
+  resolution of that reference for that account — it cannot retroactively
+  remove content someone already pulled and flattened before access was
+  revoked, which is exactly the reasoning behind converting key assets to
+  local embedded copies before final archival.
+
 ## Exercise
 
 Create a Team Library, add at least one color, one character/paragraph
