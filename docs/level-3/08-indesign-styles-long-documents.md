@@ -164,6 +164,10 @@ and multi-file books.
   overwritten the next time someone runs Synchronize from the style-source
   chapter.
 
+## 🔀 Related lessons on other tracks
+
+- [Claude Training — 03 · Using Claude for Long Documents & Summarization Strategies](https://sigilipelli.github.io/claude-training-mastery-path/level-2/03-long-documents-summarization/)
+
 ## Exercise
 
 Build a style hierarchy of at least three paragraph styles (with Next

@@ -172,6 +172,10 @@ Processor** is faster to set up than recording an Action first.
   resize-and-convert-format case so you don't have to record that specific
   Action yourself.
 
+## 🔀 Related lessons on other tracks
+
+- [Data Engineering — 07 · Batch Processing Basics](https://sigilipelli.github.io/data-engineering-mastery-path/level-1/07-batch-processing-basics/)
+
 ## Exercise
 
 Record an Action that resizes a photo to a fixed width, places a watermark
