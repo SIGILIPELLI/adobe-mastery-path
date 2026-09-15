@@ -1,3 +1,10 @@
+---
+description: "After Effects Compositing & Effects — With motion and easing in place, this module covers compositing — how multiple layers combine into one convincing…"
+---
+
+---
+description: "After Effects Compositing & Effects — With motion and easing in place, this module covers compositing — how multiple layers combine into one convincing…"---
+
 # 03 · After Effects Compositing & Effects
 
 With motion and easing in place, this module covers **compositing** — how

@@ -1,3 +1,10 @@
+---
+description: "Premiere Editing Workflow — Module 4 got a rough cut on the timeline and out the door. This module covers the pass that turns a rough cut into something…"
+---
+
+---
+description: "Premiere Editing Workflow — Module 4 got a rough cut on the timeline and out the door. This module covers the pass that turns a rough cut into something…"---
+
 # 08 · Premiere Editing Workflow
 
 Module 4 got a rough cut on the timeline and out the door. This module

@@ -1,3 +1,10 @@
+---
+description: "Photoshop Color Correction & Grading — Level 1's Curves/Hue-Saturation adjustment layers (Module 6) covered quick, everyday fixes. This module goes deeper…"
+---
+
+---
+description: "Photoshop Color Correction & Grading — Level 1's Curves/Hue-Saturation adjustment layers (Module 6) covered quick, everyday fixes. This module goes deeper…"---
+
 # 02 · Photoshop Color Correction & Grading
 
 Level 1's Curves/Hue-Saturation adjustment layers (Module 6) covered quick,

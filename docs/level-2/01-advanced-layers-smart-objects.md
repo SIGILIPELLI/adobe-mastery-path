@@ -1,3 +1,10 @@
+---
+description: "Advanced Layers & Smart Objects (Photoshop) — Level 1 treated a layer as a single sheet in the stack. Real production work needs more control than that…"
+---
+
+---
+description: "Advanced Layers & Smart Objects (Photoshop) — Level 1 treated a layer as a single sheet in the stack. Real production work needs more control than that…"---
+
 # 01 · Advanced Layers & Smart Objects (Photoshop)
 
 Level 1 treated a layer as a single sheet in the stack. Real production work

@@ -1,3 +1,10 @@
+---
+description: "Multi-App Production Pipelines Overview — Levels 1-3 covered each Creative Cloud app largely on its own, with occasional handoffs (a Library graphic…"
+---
+
+---
+description: "Multi-App Production Pipelines Overview — Levels 1-3 covered each Creative Cloud app largely on its own, with occasional handoffs (a Library graphic…"---
+
 # 01 · Multi-App Production Pipelines Overview
 
 Levels 1-3 covered each Creative Cloud app largely on its own, with

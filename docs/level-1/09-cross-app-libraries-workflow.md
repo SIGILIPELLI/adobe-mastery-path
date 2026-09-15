@@ -1,3 +1,10 @@
+---
+description: "Cross-App Creative Cloud Libraries Workflow — Module 1 set up a Creative Cloud Library. This module puts it to real use: sharing one consistent set of…"
+---
+
+---
+description: "Cross-App Creative Cloud Libraries Workflow — Module 1 set up a Creative Cloud Library. This module puts it to real use: sharing one consistent set of…"---
+
 # 09 · Cross-App Creative Cloud Libraries Workflow
 
 Module 1 set up a Creative Cloud Library. This module puts it to real use:

@@ -1,3 +1,10 @@
+---
+description: "InDesign Layout & Grids Basics — This module moves into InDesign, Adobe's page-layout app for anything with real structure across multiple pages …"
+---
+
+---
+description: "InDesign Layout & Grids Basics — This module moves into InDesign, Adobe's page-layout app for anything with real structure across multiple pages …"---
+
 # 07 · InDesign Layout & Grids Basics
 
 This module moves into **InDesign**, Adobe's page-layout app for anything

@@ -1,3 +1,10 @@
+---
+description: "Portfolio & Client Delivery Workflows — The pipeline work in this level (Modules 1-8) has all been about getting color, assets, and links right during…"
+---
+
+---
+description: "Portfolio & Client Delivery Workflows — The pipeline work in this level (Modules 1-8) has all been about getting color, assets, and links right during…"---
+
 # 09 · Portfolio & Client Delivery Workflows
 
 The pipeline work in this level (Modules 1-8) has all been about getting

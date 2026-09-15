@@ -1,3 +1,10 @@
+---
+description: "Lightroom Classic Develop Module & Color Grading — With a shoot imported and organized (Module 5), this module covers the Develop module — Lightroom's…"
+---
+
+---
+description: "Lightroom Classic Develop Module & Color Grading — With a shoot imported and organized (Module 5), this module covers the Develop module — Lightroom's…"---
+
 # 06 · Lightroom Classic Develop Module & Color Grading
 
 With a shoot imported and organized (Module 5), this module covers the

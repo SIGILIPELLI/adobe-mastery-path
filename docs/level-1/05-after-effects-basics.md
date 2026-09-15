@@ -1,3 +1,10 @@
+---
+description: "After Effects Basics — After Effects is Adobe's motion graphics and compositing tool — where Premiere Pro arranges whole clips in sequence, After Effects…"
+---
+
+---
+description: "After Effects Basics — After Effects is Adobe's motion graphics and compositing tool — where Premiere Pro arranges whole clips in sequence, After Effects…"---
+
 # 05 · After Effects Basics
 
 After Effects is Adobe's motion graphics and compositing tool — where

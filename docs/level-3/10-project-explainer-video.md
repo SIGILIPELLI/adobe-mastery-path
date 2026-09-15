@@ -1,3 +1,10 @@
+---
+description: "Project — Animated Explainer Video — A single project combining everything from Level 3: After Effects motion graphics fundamentals, keyframing/easing…"
+---
+
+---
+description: "Project — Animated Explainer Video — A single project combining everything from Level 3: After Effects motion graphics fundamentals, keyframing/easing…"---
+
 # 10 · Project — Animated Explainer Video
 
 A single project combining everything from Level 3: After Effects motion

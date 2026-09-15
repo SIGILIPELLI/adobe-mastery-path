@@ -1,3 +1,10 @@
+---
+description: "Lightroom Classic Import & Organization — This module shifts apps to Lightroom Classic, Adobe's dedicated photo cataloging and editing tool. Before any…"
+---
+
+---
+description: "Lightroom Classic Import & Organization — This module shifts apps to Lightroom Classic, Adobe's dedicated photo cataloging and editing tool. Before any…"---
+
 # 05 · Lightroom Classic Import & Organization
 
 This module shifts apps to **Lightroom Classic**, Adobe's dedicated photo

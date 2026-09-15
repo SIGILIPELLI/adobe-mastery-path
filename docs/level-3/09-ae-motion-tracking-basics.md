@@ -1,3 +1,10 @@
+---
+description: "After Effects Motion Tracking Basics — Back in After Effects, this module covers tracking — locking a layer (a graphic, text, or blur) onto motion that…"
+---
+
+---
+description: "After Effects Motion Tracking Basics — Back in After Effects, this module covers tracking — locking a layer (a graphic, text, or blur) onto motion that…"---
+
 # 09 · After Effects Motion Tracking Basics
 
 Back in After Effects, this module covers **tracking** — locking a layer

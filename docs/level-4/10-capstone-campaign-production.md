@@ -1,3 +1,10 @@
+---
+description: "Capstone Project — Full Campaign Production — The final project of the entire Adobe Mastery Path. It combines everything from Level 4 — pipeline planning…"
+---
+
+---
+description: "Capstone Project — Full Campaign Production — The final project of the entire Adobe Mastery Path. It combines everything from Level 4 — pipeline planning…"---
+
 # 10 · Capstone Project — Full Campaign Production
 
 The final project of the entire Adobe Mastery Path. It combines everything

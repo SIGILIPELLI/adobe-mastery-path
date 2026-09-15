@@ -1,3 +1,10 @@
+---
+description: "InDesign-to-Print Production Workflow — Level 3 built long documents with styles and grids. Getting a document from a finished layout to an actual printed…"
+---
+
+---
+description: "InDesign-to-Print Production Workflow — Level 3 built long documents with styles and grids. Getting a document from a finished layout to an actual printed…"---
+
 # 08 · InDesign-to-Print Production Workflow
 
 Level 3 built long documents with styles and grids. Getting a document

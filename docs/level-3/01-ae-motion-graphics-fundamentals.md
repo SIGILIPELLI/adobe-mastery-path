@@ -1,3 +1,10 @@
+---
+description: "After Effects Motion Graphics Fundamentals — Everything in Levels 1-2 lived in a single frame: a photo, a poster, a static layout. After Effects adds the…"
+---
+
+---
+description: "After Effects Motion Graphics Fundamentals — Everything in Levels 1-2 lived in a single frame: a photo, a poster, a static layout. After Effects adds the…"---
+
 # 01 · After Effects Motion Graphics Fundamentals
 
 Everything in Levels 1-2 lived in a single frame: a photo, a poster, a

@@ -1,3 +1,10 @@
+---
+description: "Illustrator Pattern & Asset Libraries — Level 1's Creative Cloud Libraries (Module 9) shared colors, character styles, and single graphics across apps.…"
+---
+
+---
+description: "Illustrator Pattern & Asset Libraries — Level 1's Creative Cloud Libraries (Module 9) shared colors, character styles, and single graphics across apps.…"---
+
 # 08 · Illustrator Pattern & Asset Libraries
 
 Level 1's Creative Cloud Libraries (Module 9) shared colors, character

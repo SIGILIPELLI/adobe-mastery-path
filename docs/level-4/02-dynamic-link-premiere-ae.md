@@ -1,3 +1,10 @@
+---
+description: "Dynamic Link: Premiere ↔ After Effects — This module covers Dynamic Link, the live connection between Premiere Pro and After Effects that skips the…"
+---
+
+---
+description: "Dynamic Link: Premiere ↔ After Effects — This module covers Dynamic Link, the live connection between Premiere Pro and After Effects that skips the…"---
+
 # 02 · Dynamic Link: Premiere ↔ After Effects
 
 This module covers **Dynamic Link**, the live connection between Premiere

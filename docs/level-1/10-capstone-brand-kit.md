@@ -1,3 +1,10 @@
+---
+description: "Capstone Project — Brand Kit — A single project that combines everything from Level 1: Creative Cloud Libraries (Modules 1 & 9), Illustrator vector work…"
+---
+
+---
+description: "Capstone Project — Brand Kit — A single project that combines everything from Level 1: Creative Cloud Libraries (Modules 1 & 9), Illustrator vector work…"---
+
 # 10 · Capstone Project — Brand Kit
 
 A single project that combines everything from Level 1: Creative Cloud

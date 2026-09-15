@@ -1,3 +1,10 @@
+---
+description: "Illustrator Basics — Illustrator is a vector editor: shapes are stored as mathematical paths (points and curves) rather than a grid of pixels, so they…"
+---
+
+---
+description: "Illustrator Basics — Illustrator is a vector editor: shapes are stored as mathematical paths (points and curves) rather than a grid of pixels, so they…"---
+
 # 03 · Illustrator Basics
 
 Illustrator is a **vector** editor: shapes are stored as mathematical paths

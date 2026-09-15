@@ -1,3 +1,10 @@
+---
+description: "After Effects Motion Graphics Templates (Mogrts) — Level 2 built titles directly in Premiere's Essential Graphics panel. This module covers the more…"
+---
+
+---
+description: "After Effects Motion Graphics Templates (Mogrts) — Level 2 built titles directly in Premiere's Essential Graphics panel. This module covers the more…"---
+
 # 06 · After Effects Motion Graphics Templates (Mogrts)
 
 Level 2 built titles directly in Premiere's Essential Graphics panel. This

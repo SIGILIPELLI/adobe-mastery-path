@@ -1,3 +1,10 @@
+---
+description: "Photoshop Automation (Actions & Batch Processing) — Repeating the same sequence of edits across dozens or hundreds of photos by hand is slow and…"
+---
+
+---
+description: "Photoshop Automation (Actions & Batch Processing) — Repeating the same sequence of edits across dozens or hundreds of photos by hand is slow and…"---
+
 # 07 · Photoshop Automation (Actions & Batch Processing)
 
 Repeating the same sequence of edits across dozens or hundreds of photos by

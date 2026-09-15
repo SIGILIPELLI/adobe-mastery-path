@@ -1,3 +1,10 @@
+---
+description: "After Effects Keyframing & Easing — Module 1 set static Transform values. Real motion graphics work is about values that change over time — a title…"
+---
+
+---
+description: "After Effects Keyframing & Easing — Module 1 set static Transform values. Real motion graphics work is about values that change over time — a title…"---
+
 # 02 · After Effects Keyframing & Easing
 
 Module 1 set static Transform values. Real motion graphics work is about

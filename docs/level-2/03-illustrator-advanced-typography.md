@@ -1,3 +1,10 @@
+---
+description: "Illustrator Advanced Typography — Level 1 (Module 7) covered basic character formatting and text-on-a-path. Real typographic work goes further: OpenType…"
+---
+
+---
+description: "Illustrator Advanced Typography — Level 1 (Module 7) covered basic character formatting and text-on-a-path. Real typographic work goes further: OpenType…"---
+
 # 03 · Illustrator Advanced Typography
 
 Level 1 (Module 7) covered basic character formatting and text-on-a-path.

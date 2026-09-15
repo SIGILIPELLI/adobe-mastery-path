@@ -1,3 +1,10 @@
+---
+description: "Illustrator Gradients, Meshes & Effects — Flat fills only go so far. This module covers gradients for smooth multi-color transitions on fills and strokes…"
+---
+
+---
+description: "Illustrator Gradients, Meshes & Effects — Flat fills only go so far. This module covers gradients for smooth multi-color transitions on fills and strokes…"---
+
 # 04 · Illustrator Gradients, Meshes & Effects
 
 Flat fills only go so far. This module covers **gradients** for smooth

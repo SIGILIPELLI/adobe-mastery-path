@@ -1,3 +1,10 @@
+---
+description: "After Effects Expressions Basics — Keyframes are hand-placed. Expressions are small pieces of JavaScript that drive a property's value with code instead …"
+---
+
+---
+description: "After Effects Expressions Basics — Keyframes are hand-placed. Expressions are small pieces of JavaScript that drive a property's value with code instead …"---
+
 # 04 · After Effects Expressions Basics
 
 Keyframes are hand-placed. **Expressions** are small pieces of JavaScript

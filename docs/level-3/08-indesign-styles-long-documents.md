@@ -1,3 +1,10 @@
+---
+description: "InDesign Styles & Long Documents — A brochure shell (Module 7) is small enough to format by hand. A 40-page report or a book isn't — every heading…"
+---
+
+---
+description: "InDesign Styles & Long Documents — A brochure shell (Module 7) is small enough to format by hand. A 40-page report or a book isn't — every heading…"---
+
 # 08 · InDesign Styles & Long Documents
 
 A brochure shell (Module 7) is small enough to format by hand. A 40-page

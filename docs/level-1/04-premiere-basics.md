@@ -1,3 +1,10 @@
+---
+description: "Premiere Pro Basics — Premiere Pro is Adobe's video editor: you import footage, arrange it on a timeline, trim it into a sequence, and export a finished…"
+---
+
+---
+description: "Premiere Pro Basics — Premiere Pro is Adobe's video editor: you import footage, arrange it on a timeline, trim it into a sequence, and export a finished…"---
+
 # 04 · Premiere Pro Basics
 
 Premiere Pro is Adobe's video editor: you import footage, arrange it on a

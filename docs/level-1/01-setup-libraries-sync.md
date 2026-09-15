@@ -1,3 +1,7 @@
+---
+description: "Creative Cloud Setup, Libraries & Sync — Every lesson in this track assumes the same starting point: the Creative Cloud desktop app installed and signed…"
+---
+
 # 01 · Creative Cloud Setup, Libraries & Sync
 
 Every lesson in this track assumes the same starting point: the **Creative

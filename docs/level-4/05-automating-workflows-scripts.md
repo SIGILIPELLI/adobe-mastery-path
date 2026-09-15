@@ -1,3 +1,10 @@
+---
+description: "Automating Workflows with Actions & Scripts — Level 2 covered Photoshop Actions and Batch for simple repetitive edits. At production scale, automation…"
+---
+
+---
+description: "Automating Workflows with Actions & Scripts — Level 2 covered Photoshop Actions and Batch for simple repetitive edits. At production scale, automation…"---
+
 # 05 · Automating Workflows with Actions & Scripts
 
 Level 2 covered Photoshop Actions and Batch for simple repetitive edits.

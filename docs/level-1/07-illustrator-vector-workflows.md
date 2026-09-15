@@ -1,3 +1,10 @@
+---
+description: "Illustrator Vector Workflows — Module 3 covered drawing individual shapes and paths. This module covers combining them — Pathfinder operations to build…"
+---
+
+---
+description: "Illustrator Vector Workflows — Module 3 covered drawing individual shapes and paths. This module covers combining them — Pathfinder operations to build…"---
+
 # 07 · Illustrator Vector Workflows
 
 Module 3 covered drawing individual shapes and paths. This module covers

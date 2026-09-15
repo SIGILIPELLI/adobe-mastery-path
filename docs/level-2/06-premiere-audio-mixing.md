@@ -1,3 +1,10 @@
+---
+description: "Premiere Audio Mixing & Sound Design — Level 1 (Module 8) covered per-clip volume and the Essential Sound panel's quick presets. This module goes further…"
+---
+
+---
+description: "Premiere Audio Mixing & Sound Design — Level 1 (Module 8) covered per-clip volume and the Essential Sound panel's quick presets. This module goes further…"---
+
 # 06 · Premiere Audio Mixing & Sound Design
 
 Level 1 (Module 8) covered per-clip volume and the Essential Sound panel's

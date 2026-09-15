@@ -1,3 +1,10 @@
+---
+description: "Premiere Advanced Color Grading (Lumetri Scopes) — Level 1 covered basic Lumetri color correction by eye. Professional grading relies on scopes …"
+---
+
+---
+description: "Premiere Advanced Color Grading (Lumetri Scopes) — Level 1 covered basic Lumetri color correction by eye. Professional grading relies on scopes …"---
+
 # 07 · Premiere Advanced Color Grading (Lumetri Scopes)
 
 Level 1 covered basic Lumetri color correction by eye. Professional
