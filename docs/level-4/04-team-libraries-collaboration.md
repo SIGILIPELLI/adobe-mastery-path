@@ -2,9 +2,6 @@
 description: "Team Libraries & Collaboration at Scale — Level 1 introduced a personal Creative Cloud Library for reusing assets across your own projects. Team Libraries…"
 ---
 
----
-description: "Team Libraries & Collaboration at Scale — Level 1 introduced a personal Creative Cloud Library for reusing assets across your own projects. Team Libraries…"---
-
 # 04 · Team Libraries & Collaboration at Scale
 
 Level 1 introduced a personal Creative Cloud Library for reusing assets

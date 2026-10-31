@@ -2,9 +2,6 @@
 description: "Project — Multi-App Marketing Campaign — A single project that combines everything from Level 2: Photoshop non-destructive compositing and grading…"
 ---
 
----
-description: "Project — Multi-App Marketing Campaign — A single project that combines everything from Level 2: Photoshop non-destructive compositing and grading…"---
-
 # 10 · Project — Multi-App Marketing Campaign
 
 A single project that combines everything from Level 2: Photoshop

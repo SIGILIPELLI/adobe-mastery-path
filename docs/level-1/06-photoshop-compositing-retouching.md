@@ -2,9 +2,6 @@
 description: "Photoshop Compositing & Retouching — Where Module 2 covered Photoshop's basic mechanics, this module covers the techniques that make Photoshop work feel…"
 ---
 
----
-description: "Photoshop Compositing & Retouching — Where Module 2 covered Photoshop's basic mechanics, this module covers the techniques that make Photoshop work feel…"---
-
 # 06 · Photoshop Compositing & Retouching
 
 Where Module 2 covered Photoshop's basic mechanics, this module covers the

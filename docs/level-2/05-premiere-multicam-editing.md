@@ -2,9 +2,6 @@
 description: "Premiere Multi-Cam Editing — Level 1 (Modules 4 & 8) cut a single stream of footage. Multi-camera work — an interview with two angles, a live event shot…"
 ---
 
----
-description: "Premiere Multi-Cam Editing — Level 1 (Modules 4 & 8) cut a single stream of footage. Multi-camera work — an interview with two angles, a live event shot…"---
-
 # 05 · Premiere Multi-Cam Editing
 
 Level 1 (Modules 4 & 8) cut a single stream of footage. Multi-camera work —

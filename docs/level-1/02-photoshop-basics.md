@@ -2,9 +2,6 @@
 description: "Photoshop Basics — Photoshop is a pixel-based (raster) image editor: every image is a grid of colored pixels, which makes it the right tool for photos and…"
 ---
 
----
-description: "Photoshop Basics — Photoshop is a pixel-based (raster) image editor: every image is a grid of colored pixels, which makes it the right tool for photos and…"---
-
 # 02 · Photoshop Basics
 
 Photoshop is a pixel-based (**raster**) image editor: every image is a grid

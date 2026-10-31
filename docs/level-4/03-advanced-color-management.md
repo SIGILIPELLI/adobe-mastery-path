@@ -2,9 +2,6 @@
 description: "Advanced Color Management Across Apps — Every earlier module assumed color mostly 'just worked.' At production scale it doesn't automatically — a photo…"
 ---
 
----
-description: "Advanced Color Management Across Apps — Every earlier module assumed color mostly 'just worked.' At production scale it doesn't automatically — a photo…"---
-
 # 03 · Advanced Color Management Across Apps
 
 Every earlier module assumed color mostly "just worked." At production

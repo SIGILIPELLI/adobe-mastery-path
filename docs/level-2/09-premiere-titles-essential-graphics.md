@@ -2,9 +2,6 @@
 description: "Premiere Titles & Essential Graphics — Level 1 covered cutting, correcting, and mixing footage. This module covers putting text and graphics on screen…"
 ---
 
----
-description: "Premiere Titles & Essential Graphics — Level 1 covered cutting, correcting, and mixing footage. This module covers putting text and graphics on screen…"---
-
 # 09 · Premiere Titles & Essential Graphics
 
 Level 1 covered cutting, correcting, and mixing footage. This module covers
