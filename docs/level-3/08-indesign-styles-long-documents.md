@@ -163,7 +163,7 @@ and multi-file books.
 
 ## 🔀 Related lessons on other tracks
 
-- [Claude Training — 03 · Using Claude for Long Documents & Summarization Strategies](https://sigilipelli.github.io/claude-training-mastery-path/level-2/03-long-documents-summarization/)
+- [Claude Training — 03 · Using Claude for Long Documents & Summarization Strategies](https://learnmasterypath.com/claude-training-mastery-path/level-2/03-long-documents-summarization/)
 
 ## Exercise
 

@@ -171,7 +171,7 @@ Processor** is faster to set up than recording an Action first.
 
 ## 🔀 Related lessons on other tracks
 
-- [Data Engineering — 07 · Batch Processing Basics](https://sigilipelli.github.io/data-engineering-mastery-path/level-1/07-batch-processing-basics/)
+- [Data Engineering — 07 · Batch Processing Basics](https://learnmasterypath.com/data-engineering-mastery-path/level-1/07-batch-processing-basics/)
 
 ## Exercise
 
