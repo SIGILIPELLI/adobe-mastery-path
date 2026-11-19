@@ -67,7 +67,7 @@ Module 5 and Level 3. Any recent version of each app works; menu names are
 stable across recent releases, though panel layouts can shift slightly
 between versions.
 
-🎥 **Prefer video?** Watch the [Mastery Path video series](https://youtube.com/@learnmasterypath) on YouTube — Shorts and full walkthroughs of these lessons.
+🎥 **Prefer video?** Watch the [Mastery Path video series](https://youtube.com/@learnmasterypath) on YouTube — Shorts and full walkthroughs of these lessons. [▶ Subscribe free](https://www.youtube.com/@learnmasterypath?sub_confirmation=1)
 
 ## More from the Mastery Path series
 
