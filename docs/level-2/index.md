@@ -1,3 +1,7 @@
+---
+description: "Level 2 (Intermediate) of the free Adobe Creative Cloud Mastery Path: Advanced Layers & Smart Objects (Photoshop), Photoshop Color Correction & Grading…"
+---
+
 # Level 2 · Intermediate
 
 ## Modules

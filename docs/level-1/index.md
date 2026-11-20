@@ -1,3 +1,7 @@
+---
+description: "Level 1 (Entry) of the free Adobe Creative Cloud Mastery Path. Get the Creative Cloud desktop app and your libraries set up, learn your way around…"
+---
+
 # Level 1 · Entry <span class="level-badge">Foundations</span>
 
 Goal: get the Creative Cloud desktop app and your libraries set up, learn your

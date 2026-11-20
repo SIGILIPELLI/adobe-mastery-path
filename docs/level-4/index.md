@@ -1,3 +1,7 @@
+---
+description: "Level 4 (Master) of the free Adobe Creative Cloud Mastery Path: Multi-App Production Pipelines Overview, Dynamic Link: Premiere ↔ After Effects, Advanced…"
+---
+
 # Level 4 · Master
 
 ## Modules

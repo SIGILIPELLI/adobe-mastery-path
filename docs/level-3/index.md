@@ -1,3 +1,7 @@
+---
+description: "Level 3 (Advanced) of the free Adobe Creative Cloud Mastery Path: After Effects Motion Graphics Fundamentals, After Effects Keyframing & Easing, After…"
+---
+
 # Level 3 · Advanced
 
 ## Modules
