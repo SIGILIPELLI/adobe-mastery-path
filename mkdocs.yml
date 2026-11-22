@@ -53,9 +53,11 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/progress-tracker.css
+  - stylesheets/final-quiz.css
 
 extra_javascript:
   - javascripts/progress-tracker.js
+  - javascripts/final-quiz.js
 
 
 
@@ -125,3 +127,5 @@ nav:
       - "08 · InDesign-to-Print Production Workflow": level-4/08-indesign-print-production.md
       - "09 · Portfolio & Client Delivery Workflows": level-4/09-portfolio-client-delivery.md
       - "10 · Capstone Project — Full Campaign Production": level-4/10-capstone-campaign-production.md
+  - "🎯 Final Quiz": quiz.md
+
