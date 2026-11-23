@@ -21,7 +21,7 @@ you can retake it as many times as you like. Your best result is saved in this b
       "00:01:30:00"
     ],
     "correctIndex": 3,
-    "explanation": "Divide frames by the frame rate to get seconds. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not run.) Verified by running it."
+    "explanation": "Divide frames by the frame rate to get seconds. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not used.) The Python was run and its output checked."
   },
   {
     "question": "How much does +6 dB change amplitude, and how many dB is a halving of amplitude?\n```python\nimport math\nprint(round(10**(6/20),2), round(20*math.log10(0.5),2))\n```\n",
@@ -32,7 +32,7 @@ you can retake it as many times as you like. Your best result is saved in this b
       "2.0 -3.01"
     ],
     "correctIndex": 0,
-    "explanation": "Amplitude ratio = 10^(dB/20); halving is about -6 dB. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not run.) Verified by running it."
+    "explanation": "Amplitude ratio = 10^(dB/20); halving is about -6 dB. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not used.) The Python was run and its output checked."
   },
   {
     "question": "What is the effective resolution of a 2,400 px wide photo placed 100 mm wide, and at 150% scale?\n```python\nprint(round(2400/(100/25.4)), round(2400/(150/25.4)))\n```\n",
@@ -43,7 +43,7 @@ you can retake it as many times as you like. Your best result is saved in this b
       "61 41"
     ],
     "correctIndex": 2,
-    "explanation": "Enlarging an image lowers its effective ppi. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not run.) Verified by running it."
+    "explanation": "Enlarging an image lowers its effective ppi. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not used.) The Python was run and its output checked."
   },
   {
     "question": "A 210x297 mm page with 3 mm bleed needs what document size, and an 8 Mbps video lasting 60 s is roughly how large (MB)?\n```python\nprint((210+6,297+6), 8*60/8)\n```\n",
@@ -54,7 +54,7 @@ you can retake it as many times as you like. Your best result is saved in this b
       "(210, 297) 7.5"
     ],
     "correctIndex": 2,
-    "explanation": "Add bleed on both sides; size = bitrate x time / 8. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not run.) Verified by running it."
+    "explanation": "Add bleed on both sides; size = bitrate x time / 8. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not used.) The Python was run and its output checked."
   },
   {
     "question": "What is the contrast ratio of mid grey (119) on white, and does it reach the WCAG AA threshold of 4.5?\n```python\ndef lin(c):\n    c/=255\n    return c/12.92 if c<=0.04045 else ((c+0.055)/1.055)**2.4\nL=lambda v: lin(v)\nr=(1+0.05)/(L(119)+0.05)\nprint(round(r,2), r>=4.5)\n```\n",
@@ -65,7 +65,7 @@ you can retake it as many times as you like. Your best result is saved in this b
       "7.0 True"
     ],
     "correctIndex": 1,
-    "explanation": "Mid grey #777 is a famous near-miss for AA on white. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not run.) Verified by running it."
+    "explanation": "Mid grey #777 is a famous near-miss for AA on white. (A Python check of the arithmetic behind the technique; the Adobe applications themselves were not used.) The Python was run and its output checked."
   },
   {
     "question": "Which setting extends artwork beyond the trim edge so no white slivers show after cutting?",
