@@ -81,8 +81,8 @@ not_in_nav: |
 
 nav:
   - Home: index.md
-  - "💼 Interview Questions": interview-questions.md
-  - "📋 Cheat Sheet": cheat-sheet.md
+  - Interview Questions: interview-questions.md
+  - Cheat Sheet: cheat-sheet.md
   - "Level 1 · Entry":
       - Overview: level-1/index.md
       - "01 · Creative Cloud Setup, Libraries & Sync": level-1/01-setup-libraries-sync.md
@@ -131,5 +131,5 @@ nav:
       - "08 · InDesign-to-Print Production Workflow": level-4/08-indesign-print-production.md
       - "09 · Portfolio & Client Delivery Workflows": level-4/09-portfolio-client-delivery.md
       - "10 · Capstone Project — Full Campaign Production": level-4/10-capstone-campaign-production.md
-  - "🎯 Final Quiz": quiz.md
+  - Final Quiz: quiz.md
 
