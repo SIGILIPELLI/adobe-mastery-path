@@ -31,8 +31,7 @@ Lightroom, and InDesign, as real production workflows.
   Adobe app.
 - Each topic ends with a cheat-sheet table of the key tools and shortcuts
   covered, plus an **Exercise** to practice the workflow on your own file.
-- Each level ends with a project that combines everything learned in that
-  level.
+- Levels 1–3 each end with a project that combines everything learned in that level, and Level 4 ends with the course capstone.
 - Use the search bar (top of the page) to jump straight to a topic.
 
 Start here → [Level 1 · Entry](level-1/index.md)
